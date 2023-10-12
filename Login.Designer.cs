@@ -44,6 +44,7 @@
             txtUser.Name = "txtUser";
             txtUser.Size = new Size(216, 27);
             txtUser.TabIndex = 0;
+            txtUser.TextChanged += txtUser_TextChanged;
             // 
             // txtPassword
             // 
@@ -51,6 +52,7 @@
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(216, 27);
             txtPassword.TabIndex = 1;
+            txtPassword.TextChanged += txtPassword_TextChanged;
             // 
             // label1
             // 
@@ -108,6 +110,7 @@
             Name = "Login";
             RightToLeft = RightToLeft.No;
             Text = "Login";
+            Load += Login_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
