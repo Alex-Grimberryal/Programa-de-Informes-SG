@@ -50,19 +50,18 @@
             // 
             panel1.BackColor = Color.LightSteelBlue;
             panel1.Controls.Add(label1);
-            panel1.Location = new Point(1, -2);
-            panel1.Margin = new Padding(3, 2, 3, 2);
+            panel1.Location = new Point(1, -3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1680, 120);
+            panel1.Size = new Size(1920, 160);
             panel1.TabIndex = 0;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Bahnschrift Condensed", 72F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(10, 0);
+            label1.Location = new Point(11, 0);
             label1.Name = "label1";
-            label1.Size = new Size(1083, 115);
+            label1.Size = new Size(1365, 144);
             label1.TabIndex = 0;
             label1.Text = "SG COMUNICACIONES Y SEGURIDAD";
             label1.Click += label1_Click;
@@ -75,17 +74,17 @@
             panel2.Controls.Add(txtBuscador);
             panel2.Controls.Add(btnNuevoInforme);
             panel2.Controls.Add(btnVerInformes);
-            panel2.Location = new Point(1, 118);
-            panel2.Margin = new Padding(3, 2, 3, 2);
+            panel2.Location = new Point(1, 157);
             panel2.Name = "panel2";
-            panel2.Size = new Size(460, 657);
+            panel2.Size = new Size(526, 876);
             panel2.TabIndex = 1;
             panel2.Paint += panel2_Paint;
             // 
             // pictureBox2
             // 
             pictureBox2.BackgroundImage = (Image)resources.GetObject("pictureBox2.BackgroundImage");
-            pictureBox2.Location = new Point(35, 515);
+            pictureBox2.Location = new Point(40, 687);
+            pictureBox2.Margin = new Padding(3, 4, 3, 4);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(383, 110);
             pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -97,16 +96,16 @@
             // 
             panel3.BackColor = Color.White;
             panel3.Controls.Add(pictureBox1);
-            panel3.Location = new Point(372, 52);
-            panel3.Margin = new Padding(3, 2, 3, 2);
+            panel3.Location = new Point(425, 69);
             panel3.Name = "panel3";
-            panel3.Size = new Size(72, 62);
+            panel3.Size = new Size(82, 83);
             panel3.TabIndex = 3;
             // 
             // pictureBox1
             // 
             pictureBox1.BackgroundImage = (Image)resources.GetObject("pictureBox1.BackgroundImage");
-            pictureBox1.Location = new Point(16, 6);
+            pictureBox1.Location = new Point(18, 8);
+            pictureBox1.Margin = new Padding(3, 4, 3, 4);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(56, 56);
             pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -117,12 +116,11 @@
             // 
             txtBuscador.BorderStyle = BorderStyle.None;
             txtBuscador.Font = new Font("Bahnschrift Condensed", 36F, FontStyle.Bold, GraphicsUnit.Point);
-            txtBuscador.Location = new Point(25, 52);
-            txtBuscador.Margin = new Padding(3, 2, 3, 2);
+            txtBuscador.Location = new Point(29, 69);
             txtBuscador.Multiline = true;
             txtBuscador.Name = "txtBuscador";
             txtBuscador.PlaceholderText = "Buscar Elemento";
-            txtBuscador.Size = new Size(350, 62);
+            txtBuscador.Size = new Size(400, 83);
             txtBuscador.TabIndex = 2;
             txtBuscador.TextChanged += textBox1_TextChanged;
             // 
@@ -132,10 +130,9 @@
             btnNuevoInforme.FlatAppearance.BorderSize = 0;
             btnNuevoInforme.FlatStyle = FlatStyle.Flat;
             btnNuevoInforme.Font = new Font("Bahnschrift Condensed", 28.2F, FontStyle.Bold, GraphicsUnit.Point);
-            btnNuevoInforme.Location = new Point(-11, 334);
-            btnNuevoInforme.Margin = new Padding(3, 2, 3, 2);
+            btnNuevoInforme.Location = new Point(-13, 445);
             btnNuevoInforme.Name = "btnNuevoInforme";
-            btnNuevoInforme.Size = new Size(482, 136);
+            btnNuevoInforme.Size = new Size(551, 181);
             btnNuevoInforme.TabIndex = 1;
             btnNuevoInforme.Text = "Crear Nuevo Informe";
             btnNuevoInforme.UseVisualStyleBackColor = false;
@@ -148,10 +145,9 @@
             btnVerInformes.FlatAppearance.BorderSize = 0;
             btnVerInformes.FlatStyle = FlatStyle.Flat;
             btnVerInformes.Font = new Font("Bahnschrift Condensed", 28.2F, FontStyle.Bold, GraphicsUnit.Point);
-            btnVerInformes.Location = new Point(-11, 178);
-            btnVerInformes.Margin = new Padding(3, 2, 3, 2);
+            btnVerInformes.Location = new Point(-13, 237);
             btnVerInformes.Name = "btnVerInformes";
-            btnVerInformes.Size = new Size(482, 132);
+            btnVerInformes.Size = new Size(551, 176);
             btnVerInformes.TabIndex = 0;
             btnVerInformes.Text = "Ver Resumen de Actividades";
             btnVerInformes.UseVisualStyleBackColor = false;
@@ -159,25 +155,24 @@
             // 
             // actividad
             // 
-            actividad.Location = new Point(488, 134);
-            actividad.Margin = new Padding(3, 2, 3, 2);
+            actividad.Location = new Point(558, 179);
             actividad.Name = "actividad";
-            actividad.Size = new Size(1154, 619);
+            actividad.Size = new Size(1319, 825);
             actividad.TabIndex = 2;
+            actividad.Paint += actividad_Paint;
             // 
             // Principal
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.MidnightBlue;
-            ClientSize = new Size(1348, 773);
+            ClientSize = new Size(1541, 1031);
             Controls.Add(actividad);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(3, 2, 3, 2);
             Name = "Principal";
             Text = "SG COMUNICACIONES Y SEGURIDAD";
             Load += Form1_Load;

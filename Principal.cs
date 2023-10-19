@@ -12,12 +12,18 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 {
     public partial class Principal : Form
     {
+        private UserControl2 userControl2;
+        private readonly EventHandler UserControl2_Load;
+
+#pragma warning disable CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declararlo como que admite un valor NULL.
         public Principal()
+#pragma warning restore CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declararlo como que admite un valor NULL.
         {
             InitializeComponent();
             // Suscribir los eventos Click de los botones
             btnVerInformes.Click += BtnVerInformes_Click;
             btnNuevoInforme.Click += BtnNuevoInforme_Click;
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -32,8 +38,17 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
         private void BtnVerInformes_Click(object? sender, EventArgs e)
         {
-            // Lógica para actualizar el panel al ver informes
-            actividad.Text = "Mostrando informes...";
+            // Lógica para actualizar el panel al crear nuevos informes
+            actividad.Controls.Clear(); // Limpia cualquier control existente en el panel
+
+            UserControl2 userControl2 = new UserControl2();
+            userControl2.Dock = DockStyle.Fill; // Ajusta el relleno del UserControl al tamaño del panel
+
+            actividad.Controls.Add(userControl2); // Agrega el UserControl al panel
+            actividad.Refresh(); // Actualiza el panel si es necesario
+
+            userControl2.Load += UserControl2_Load; // Suscribe al evento Load del UserControl2
+
             // Otras actualizaciones necesarias
         }
 
@@ -51,7 +66,16 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
         private void btnNuevoInforme_Click_1(object sender, EventArgs e)
         {
+            // Lógica para actualizar el panel al crear nuevos informes
+            actividad.Controls.Clear(); // Limpia cualquier control existente en el panel
 
+            UserControl1 nuevoInforme = new UserControl1();
+            nuevoInforme.Dock = DockStyle.Fill; // Ajusta el relleno del UserControl al tamaño del panel
+
+            actividad.Controls.Add(nuevoInforme); // Agrega el UserControl al panel
+            actividad.Refresh(); // Actualiza el panel si es necesario
+
+            // Otras actualizaciones necesarias
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -70,6 +94,11 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void actividad_Paint(object sender, PaintEventArgs e)
         {
 
         }
