@@ -23,6 +23,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             // Suscribir los eventos Click de los botones
             btnVerInformes.Click += BtnVerInformes_Click;
             btnNuevoInforme.Click += BtnNuevoInforme_Click;
+            opciones.Click += opciones_Click;
 
         }
 
@@ -101,6 +102,17 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
         private void actividad_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void opciones_Click(object sender, EventArgs e)
+        {
+            actividad.Controls.Clear(); // Limpia cualquier control existente en el panel
+
+            Opciones opciones = new Opciones(); 
+            opciones.Dock = DockStyle.Fill; // Ajusta el relleno del User
+
+            actividad.Controls.Add(opciones); // Agrega el UserControl al panel
+            actividad.Refresh(); // Actualiza el panel si es necesario
         }
     }
 }

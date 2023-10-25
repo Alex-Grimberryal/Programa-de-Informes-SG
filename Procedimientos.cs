@@ -7,7 +7,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 {
     internal class Procedimientos
     {
-        private SqlConnection Conexion = new SqlConnection(@"Server=.\SQL2019;Database=NSG; Integrated Security=True;");
+        private SqlConnection Conexion = new SqlConnection(@"Server=LAPTOP-3R8N4QM6\SQLEXPRESS;Database=NSG; Integrated Security=True; TrustServerCertificate=True");
 
         public int Login(string txtUser, string txtPassword)
         {

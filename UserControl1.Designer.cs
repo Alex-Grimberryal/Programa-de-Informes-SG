@@ -29,30 +29,30 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            monto = new TextBox();
+            fecha = new TextBox();
+            ArtSol = new TextBox();
+            telefono = new TextBox();
+            email = new TextBox();
+            cliente = new TextBox();
+            nroRegistro = new TextBox();
+            label7 = new Label();
+            label6 = new Label();
+            label5 = new Label();
+            label4 = new Label();
+            label3 = new Label();
+            label2 = new Label();
+            label1 = new Label();
             panel2 = new Panel();
             panel3 = new Panel();
-            panel4 = new Panel();
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
-            label5 = new Label();
-            label6 = new Label();
-            label7 = new Label();
-            label8 = new Label();
-            label9 = new Label();
+            tecnico = new TextBox();
+            NtAdd = new TextBox();
+            direccion = new TextBox();
             label10 = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
-            textBox5 = new TextBox();
-            textBox6 = new TextBox();
-            textBox7 = new TextBox();
-            textBox8 = new TextBox();
-            textBox9 = new TextBox();
-            textBox10 = new TextBox();
-            button1 = new Button();
+            label9 = new Label();
+            label8 = new Label();
+            panel4 = new Panel();
+            RegistrarInforme = new Button();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             SuspendLayout();
@@ -60,13 +60,13 @@
             // panel1
             // 
             panel1.BackColor = Color.DarkBlue;
-            panel1.Controls.Add(textBox7);
-            panel1.Controls.Add(textBox6);
-            panel1.Controls.Add(textBox5);
-            panel1.Controls.Add(textBox4);
-            panel1.Controls.Add(textBox3);
-            panel1.Controls.Add(textBox2);
-            panel1.Controls.Add(textBox1);
+            panel1.Controls.Add(monto);
+            panel1.Controls.Add(fecha);
+            panel1.Controls.Add(ArtSol);
+            panel1.Controls.Add(telefono);
+            panel1.Controls.Add(email);
+            panel1.Controls.Add(cliente);
+            panel1.Controls.Add(nroRegistro);
             panel1.Controls.Add(label7);
             panel1.Controls.Add(label6);
             panel1.Controls.Add(label5);
@@ -81,104 +81,81 @@
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
             // 
-            // panel2
+            // monto
             // 
-            panel2.Location = new Point(630, 0);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(638, 776);
-            panel2.TabIndex = 1;
+            monto.BackColor = Color.SteelBlue;
+            monto.BorderStyle = BorderStyle.None;
+            monto.Location = new Point(283, 682);
+            monto.Multiline = true;
+            monto.Name = "monto";
+            monto.Size = new Size(294, 36);
+            monto.TabIndex = 15;
+            monto.TextChanged += textBox7_TextChanged;
             // 
-            // panel3
+            // fecha
             // 
-            panel3.BackColor = Color.DarkBlue;
-            panel3.Controls.Add(textBox10);
-            panel3.Controls.Add(textBox9);
-            panel3.Controls.Add(textBox8);
-            panel3.Controls.Add(label10);
-            panel3.Controls.Add(label9);
-            panel3.Controls.Add(label8);
-            panel3.Controls.Add(panel4);
-            panel3.Location = new Point(679, 25);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(616, 406);
-            panel3.TabIndex = 2;
-            panel3.Paint += panel3_Paint;
+            fecha.BackColor = Color.SteelBlue;
+            fecha.BorderStyle = BorderStyle.None;
+            fecha.Location = new Point(283, 621);
+            fecha.Multiline = true;
+            fecha.Name = "fecha";
+            fecha.Size = new Size(294, 36);
+            fecha.TabIndex = 14;
+            fecha.TextChanged += textBox6_TextChanged;
             // 
-            // panel4
+            // ArtSol
             // 
-            panel4.Location = new Point(630, 0);
-            panel4.Name = "panel4";
-            panel4.Size = new Size(638, 776);
-            panel4.TabIndex = 1;
+            ArtSol.BackColor = Color.SteelBlue;
+            ArtSol.BorderStyle = BorderStyle.None;
+            ArtSol.Cursor = Cursors.IBeam;
+            ArtSol.Location = new Point(283, 360);
+            ArtSol.Multiline = true;
+            ArtSol.Name = "ArtSol";
+            ArtSol.Size = new Size(294, 235);
+            ArtSol.TabIndex = 13;
+            ArtSol.TextChanged += textBox5_TextChanged;
             // 
-            // label1
+            // telefono
             // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.DeepSkyBlue;
-            label1.FlatStyle = FlatStyle.Flat;
-            label1.Font = new Font("Bahnschrift SemiBold Condensed", 36F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(92, 37);
-            label1.Name = "label1";
-            label1.Size = new Size(444, 72);
-            label1.TabIndex = 2;
-            label1.Text = "     Nuevo Registro     ";
+            telefono.BackColor = Color.SteelBlue;
+            telefono.BorderStyle = BorderStyle.None;
+            telefono.Location = new Point(434, 296);
+            telefono.Multiline = true;
+            telefono.Name = "telefono";
+            telefono.Size = new Size(143, 36);
+            telefono.TabIndex = 12;
             // 
-            // label2
+            // email
             // 
-            label2.AutoSize = true;
-            label2.BackColor = Color.DeepSkyBlue;
-            label2.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(46, 170);
-            label2.Name = "label2";
-            label2.Size = new Size(190, 36);
-            label2.TabIndex = 3;
-            label2.Text = "   N° de Registro   ";
+            email.BackColor = Color.SteelBlue;
+            email.BorderStyle = BorderStyle.None;
+            email.Location = new Point(283, 296);
+            email.Multiline = true;
+            email.Name = "email";
+            email.Size = new Size(128, 36);
+            email.TabIndex = 11;
             // 
-            // label3
+            // cliente
             // 
-            label3.AutoSize = true;
-            label3.BackColor = Color.DeepSkyBlue;
-            label3.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            label3.Location = new Point(46, 236);
-            label3.Name = "label3";
-            label3.Size = new Size(188, 36);
-            label3.TabIndex = 4;
-            label3.Text = "         Cliente        ";
+            cliente.BackColor = Color.SteelBlue;
+            cliente.BorderStyle = BorderStyle.None;
+            cliente.Location = new Point(283, 236);
+            cliente.Multiline = true;
+            cliente.Name = "cliente";
+            cliente.Size = new Size(294, 36);
+            cliente.TabIndex = 10;
+            cliente.TextChanged += textBox2_TextChanged;
             // 
-            // label4
+            // nroRegistro
             // 
-            label4.AutoSize = true;
-            label4.BackColor = Color.DeepSkyBlue;
-            label4.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            label4.Location = new Point(46, 360);
-            label4.Name = "label4";
-            label4.Size = new Size(187, 72);
-            label4.TabIndex = 5;
-            label4.Text = "       Articulos \r\n     solicitados      ";
-            label4.Click += label4_Click;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.BackColor = Color.DeepSkyBlue;
-            label5.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            label5.Location = new Point(46, 621);
-            label5.Name = "label5";
-            label5.Size = new Size(188, 36);
-            label5.TabIndex = 6;
-            label5.Text = "          Fecha         ";
-            label5.Click += label5_Click;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.BackColor = Color.DeepSkyBlue;
-            label6.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            label6.Location = new Point(46, 682);
-            label6.Name = "label6";
-            label6.Size = new Size(190, 36);
-            label6.TabIndex = 7;
-            label6.Text = "   N° de Registro   ";
+            nroRegistro.BackColor = Color.SteelBlue;
+            nroRegistro.BorderStyle = BorderStyle.None;
+            nroRegistro.Location = new Point(283, 170);
+            nroRegistro.Multiline = true;
+            nroRegistro.Name = "nroRegistro";
+            nroRegistro.Size = new Size(294, 36);
+            nroRegistro.TabIndex = 9;
+            nroRegistro.TextChanged += textBox1_TextChanged;
             // 
             // label7
             // 
@@ -193,27 +170,130 @@
             label7.Text = "       Contacto       ";
             label7.Click += label7_Click;
             // 
-            // label8
+            // label6
             // 
-            label8.AutoSize = true;
-            label8.BackColor = Color.DeepSkyBlue;
-            label8.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            label8.Location = new Point(38, 37);
-            label8.Name = "label8";
-            label8.Size = new Size(185, 72);
-            label8.TabIndex = 4;
-            label8.Text = "    Dirección de    \r\n     Instalación";
+            label6.AutoSize = true;
+            label6.BackColor = Color.DeepSkyBlue;
+            label6.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label6.Location = new Point(46, 682);
+            label6.Name = "label6";
+            label6.Size = new Size(187, 36);
+            label6.TabIndex = 7;
+            label6.Text = "     Monto Total     ";
             // 
-            // label9
+            // label5
             // 
-            label9.AutoSize = true;
-            label9.BackColor = Color.DeepSkyBlue;
-            label9.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            label9.Location = new Point(38, 144);
-            label9.Name = "label9";
-            label9.Size = new Size(183, 72);
-            label9.TabIndex = 5;
-            label9.Text = "          Notas    \r\n     Adicionales    ";
+            label5.AutoSize = true;
+            label5.BackColor = Color.DeepSkyBlue;
+            label5.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label5.Location = new Point(46, 621);
+            label5.Name = "label5";
+            label5.Size = new Size(188, 36);
+            label5.TabIndex = 6;
+            label5.Text = "          Fecha         ";
+            label5.Click += label5_Click;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.BackColor = Color.DeepSkyBlue;
+            label4.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label4.Location = new Point(46, 360);
+            label4.Name = "label4";
+            label4.Size = new Size(187, 72);
+            label4.TabIndex = 5;
+            label4.Text = "       Articulos \r\n     solicitados      ";
+            label4.Click += label4_Click;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.BackColor = Color.DeepSkyBlue;
+            label3.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label3.Location = new Point(46, 236);
+            label3.Name = "label3";
+            label3.Size = new Size(188, 36);
+            label3.TabIndex = 4;
+            label3.Text = "         Cliente        ";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = Color.DeepSkyBlue;
+            label2.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label2.Location = new Point(46, 170);
+            label2.Name = "label2";
+            label2.Size = new Size(190, 36);
+            label2.TabIndex = 3;
+            label2.Text = "   N° de Registro   ";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.BackColor = Color.DeepSkyBlue;
+            label1.FlatStyle = FlatStyle.Flat;
+            label1.Font = new Font("Bahnschrift SemiBold Condensed", 36F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.Location = new Point(92, 37);
+            label1.Name = "label1";
+            label1.Size = new Size(444, 72);
+            label1.TabIndex = 2;
+            label1.Text = "     Nuevo Registro     ";
+            // 
+            // panel2
+            // 
+            panel2.Location = new Point(630, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(638, 776);
+            panel2.TabIndex = 1;
+            // 
+            // panel3
+            // 
+            panel3.BackColor = Color.DarkBlue;
+            panel3.Controls.Add(tecnico);
+            panel3.Controls.Add(NtAdd);
+            panel3.Controls.Add(direccion);
+            panel3.Controls.Add(label10);
+            panel3.Controls.Add(label9);
+            panel3.Controls.Add(label8);
+            panel3.Controls.Add(panel4);
+            panel3.Location = new Point(679, 25);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(616, 406);
+            panel3.TabIndex = 2;
+            panel3.Paint += panel3_Paint;
+            // 
+            // tecnico
+            // 
+            tecnico.BackColor = Color.SteelBlue;
+            tecnico.BorderStyle = BorderStyle.None;
+            tecnico.Location = new Point(284, 335);
+            tecnico.Multiline = true;
+            tecnico.Name = "tecnico";
+            tecnico.Size = new Size(294, 36);
+            tecnico.TabIndex = 18;
+            tecnico.TextChanged += textBox10_TextChanged;
+            // 
+            // NtAdd
+            // 
+            NtAdd.BackColor = Color.SteelBlue;
+            NtAdd.BorderStyle = BorderStyle.None;
+            NtAdd.Location = new Point(284, 144);
+            NtAdd.Multiline = true;
+            NtAdd.Name = "NtAdd";
+            NtAdd.Size = new Size(294, 167);
+            NtAdd.TabIndex = 17;
+            NtAdd.TextChanged += textBox9_TextChanged;
+            // 
+            // direccion
+            // 
+            direccion.BackColor = Color.SteelBlue;
+            direccion.BorderStyle = BorderStyle.None;
+            direccion.Location = new Point(284, 37);
+            direccion.Multiline = true;
+            direccion.Name = "direccion";
+            direccion.Size = new Size(294, 72);
+            direccion.TabIndex = 16;
+            direccion.TextChanged += textBox8_TextChanged;
             // 
             // label10
             // 
@@ -226,132 +306,53 @@
             label10.TabIndex = 6;
             label10.Text = " Técnico a cargo ";
             // 
-            // textBox1
+            // label9
             // 
-            textBox1.BackColor = Color.SteelBlue;
-            textBox1.BorderStyle = BorderStyle.None;
-            textBox1.Location = new Point(283, 170);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(294, 36);
-            textBox1.TabIndex = 9;
-            textBox1.TextChanged += textBox1_TextChanged;
+            label9.AutoSize = true;
+            label9.BackColor = Color.DeepSkyBlue;
+            label9.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label9.Location = new Point(38, 144);
+            label9.Name = "label9";
+            label9.Size = new Size(183, 72);
+            label9.TabIndex = 5;
+            label9.Text = "          Notas    \r\n     Adicionales    ";
             // 
-            // textBox2
+            // label8
             // 
-            textBox2.BackColor = Color.SteelBlue;
-            textBox2.BorderStyle = BorderStyle.None;
-            textBox2.Location = new Point(283, 236);
-            textBox2.Multiline = true;
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(294, 36);
-            textBox2.TabIndex = 10;
-            textBox2.TextChanged += textBox2_TextChanged;
+            label8.AutoSize = true;
+            label8.BackColor = Color.DeepSkyBlue;
+            label8.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label8.Location = new Point(38, 37);
+            label8.Name = "label8";
+            label8.Size = new Size(185, 72);
+            label8.TabIndex = 4;
+            label8.Text = "    Dirección de    \r\n     Instalación";
             // 
-            // textBox3
+            // panel4
             // 
-            textBox3.BackColor = Color.SteelBlue;
-            textBox3.BorderStyle = BorderStyle.None;
-            textBox3.Location = new Point(283, 296);
-            textBox3.Multiline = true;
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(128, 36);
-            textBox3.TabIndex = 11;
+            panel4.Location = new Point(630, 0);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(638, 776);
+            panel4.TabIndex = 1;
             // 
-            // textBox4
+            // RegistrarInforme
             // 
-            textBox4.BackColor = Color.SteelBlue;
-            textBox4.BorderStyle = BorderStyle.None;
-            textBox4.Location = new Point(434, 296);
-            textBox4.Multiline = true;
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(143, 36);
-            textBox4.TabIndex = 12;
-            // 
-            // textBox5
-            // 
-            textBox5.BackColor = Color.SteelBlue;
-            textBox5.BorderStyle = BorderStyle.None;
-            textBox5.Cursor = Cursors.IBeam;
-            textBox5.Location = new Point(283, 360);
-            textBox5.Multiline = true;
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(294, 235);
-            textBox5.TabIndex = 13;
-            textBox5.TextChanged += textBox5_TextChanged;
-            // 
-            // textBox6
-            // 
-            textBox6.BackColor = Color.SteelBlue;
-            textBox6.BorderStyle = BorderStyle.None;
-            textBox6.Location = new Point(283, 621);
-            textBox6.Multiline = true;
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(294, 36);
-            textBox6.TabIndex = 14;
-            textBox6.TextChanged += textBox6_TextChanged;
-            // 
-            // textBox7
-            // 
-            textBox7.BackColor = Color.SteelBlue;
-            textBox7.BorderStyle = BorderStyle.None;
-            textBox7.Location = new Point(283, 682);
-            textBox7.Multiline = true;
-            textBox7.Name = "textBox7";
-            textBox7.Size = new Size(294, 36);
-            textBox7.TabIndex = 15;
-            textBox7.TextChanged += textBox7_TextChanged;
-            // 
-            // textBox8
-            // 
-            textBox8.BackColor = Color.SteelBlue;
-            textBox8.BorderStyle = BorderStyle.None;
-            textBox8.Location = new Point(284, 37);
-            textBox8.Multiline = true;
-            textBox8.Name = "textBox8";
-            textBox8.Size = new Size(294, 72);
-            textBox8.TabIndex = 16;
-            textBox8.TextChanged += textBox8_TextChanged;
-            // 
-            // textBox9
-            // 
-            textBox9.BackColor = Color.SteelBlue;
-            textBox9.BorderStyle = BorderStyle.None;
-            textBox9.Location = new Point(284, 144);
-            textBox9.Multiline = true;
-            textBox9.Name = "textBox9";
-            textBox9.Size = new Size(294, 167);
-            textBox9.TabIndex = 17;
-            textBox9.TextChanged += textBox9_TextChanged;
-            // 
-            // textBox10
-            // 
-            textBox10.BackColor = Color.SteelBlue;
-            textBox10.BorderStyle = BorderStyle.None;
-            textBox10.Location = new Point(284, 335);
-            textBox10.Multiline = true;
-            textBox10.Name = "textBox10";
-            textBox10.Size = new Size(294, 36);
-            textBox10.TabIndex = 18;
-            textBox10.TextChanged += textBox10_TextChanged;
-            // 
-            // button1
-            // 
-            button1.BackColor = Color.LightSteelBlue;
-            button1.Font = new Font("Bahnschrift SemiBold Condensed", 72F, FontStyle.Bold, GraphicsUnit.Point);
-            button1.Location = new Point(718, 481);
-            button1.Name = "button1";
-            button1.Size = new Size(557, 288);
-            button1.TabIndex = 3;
-            button1.Text = "REGISTRAR";
-            button1.UseVisualStyleBackColor = false;
+            RegistrarInforme.BackColor = Color.LightSteelBlue;
+            RegistrarInforme.Font = new Font("Bahnschrift SemiBold Condensed", 72F, FontStyle.Bold, GraphicsUnit.Point);
+            RegistrarInforme.Location = new Point(718, 481);
+            RegistrarInforme.Name = "RegistrarInforme";
+            RegistrarInforme.Size = new Size(557, 288);
+            RegistrarInforme.TabIndex = 3;
+            RegistrarInforme.Text = "REGISTRAR";
+            RegistrarInforme.UseVisualStyleBackColor = false;
+            RegistrarInforme.Click += button1_Click_1;
             // 
             // UserControl1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.MidnightBlue;
-            Controls.Add(button1);
+            Controls.Add(RegistrarInforme);
             Controls.Add(panel3);
             Controls.Add(panel1);
             Name = "UserControl1";
@@ -380,16 +381,16 @@
         private Label label9;
         private Label label8;
         private Label label10;
-        private TextBox textBox5;
-        private TextBox textBox4;
-        private TextBox textBox3;
-        private TextBox textBox2;
-        private TextBox textBox1;
-        private TextBox textBox6;
-        private TextBox textBox7;
-        private TextBox textBox8;
-        private TextBox textBox10;
-        private TextBox textBox9;
-        private Button button1;
+        private TextBox ArtSol;
+        private TextBox telefono;
+        private TextBox email;
+        private TextBox cliente;
+        private TextBox nroRegistro;
+        private TextBox fecha;
+        private TextBox monto;
+        private TextBox direccion;
+        private TextBox tecnico;
+        private TextBox NtAdd;
+        private Button RegistrarInforme;
     }
 }

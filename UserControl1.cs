@@ -106,5 +106,10 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
         {
 
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

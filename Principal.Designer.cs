@@ -39,6 +39,7 @@
             btnNuevoInforme = new Button();
             btnVerInformes = new Button();
             actividad = new Panel();
+            opciones = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -69,6 +70,7 @@
             // panel2
             // 
             panel2.BackColor = Color.RoyalBlue;
+            panel2.Controls.Add(opciones);
             panel2.Controls.Add(pictureBox2);
             panel2.Controls.Add(panel3);
             panel2.Controls.Add(txtBuscador);
@@ -83,7 +85,7 @@
             // pictureBox2
             // 
             pictureBox2.BackgroundImage = (Image)resources.GetObject("pictureBox2.BackgroundImage");
-            pictureBox2.Location = new Point(40, 687);
+            pictureBox2.Location = new Point(68, 689);
             pictureBox2.Margin = new Padding(3, 4, 3, 4);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(383, 110);
@@ -96,7 +98,7 @@
             // 
             panel3.BackColor = Color.White;
             panel3.Controls.Add(pictureBox1);
-            panel3.Location = new Point(425, 69);
+            panel3.Location = new Point(417, 36);
             panel3.Name = "panel3";
             panel3.Size = new Size(82, 83);
             panel3.TabIndex = 3;
@@ -116,7 +118,7 @@
             // 
             txtBuscador.BorderStyle = BorderStyle.None;
             txtBuscador.Font = new Font("Bahnschrift Condensed", 36F, FontStyle.Bold, GraphicsUnit.Point);
-            txtBuscador.Location = new Point(29, 69);
+            txtBuscador.Location = new Point(21, 36);
             txtBuscador.Multiline = true;
             txtBuscador.Name = "txtBuscador";
             txtBuscador.PlaceholderText = "Buscar Elemento";
@@ -130,9 +132,9 @@
             btnNuevoInforme.FlatAppearance.BorderSize = 0;
             btnNuevoInforme.FlatStyle = FlatStyle.Flat;
             btnNuevoInforme.Font = new Font("Bahnschrift Condensed", 28.2F, FontStyle.Bold, GraphicsUnit.Point);
-            btnNuevoInforme.Location = new Point(-13, 445);
+            btnNuevoInforme.Location = new Point(-13, 322);
             btnNuevoInforme.Name = "btnNuevoInforme";
-            btnNuevoInforme.Size = new Size(551, 181);
+            btnNuevoInforme.Size = new Size(551, 134);
             btnNuevoInforme.TabIndex = 1;
             btnNuevoInforme.Text = "Crear Nuevo Informe";
             btnNuevoInforme.UseVisualStyleBackColor = false;
@@ -145,9 +147,9 @@
             btnVerInformes.FlatAppearance.BorderSize = 0;
             btnVerInformes.FlatStyle = FlatStyle.Flat;
             btnVerInformes.Font = new Font("Bahnschrift Condensed", 28.2F, FontStyle.Bold, GraphicsUnit.Point);
-            btnVerInformes.Location = new Point(-13, 237);
+            btnVerInformes.Location = new Point(-13, 162);
             btnVerInformes.Name = "btnVerInformes";
-            btnVerInformes.Size = new Size(551, 176);
+            btnVerInformes.Size = new Size(551, 137);
             btnVerInformes.TabIndex = 0;
             btnVerInformes.Text = "Ver Resumen de Actividades";
             btnVerInformes.UseVisualStyleBackColor = false;
@@ -160,6 +162,20 @@
             actividad.Size = new Size(1319, 825);
             actividad.TabIndex = 2;
             actividad.Paint += actividad_Paint;
+            // 
+            // opciones
+            // 
+            opciones.BackColor = Color.SkyBlue;
+            opciones.FlatAppearance.BorderSize = 0;
+            opciones.FlatStyle = FlatStyle.Flat;
+            opciones.Font = new Font("Bahnschrift Condensed", 28.2F, FontStyle.Bold, GraphicsUnit.Point);
+            opciones.Location = new Point(-13, 481);
+            opciones.Name = "opciones";
+            opciones.Size = new Size(551, 134);
+            opciones.TabIndex = 5;
+            opciones.Text = "Opciones";
+            opciones.UseVisualStyleBackColor = false;
+            opciones.Click += opciones_Click;
             // 
             // Principal
             // 
@@ -204,5 +220,6 @@
         private TextBox txtBuscador;
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
+        private Button opciones;
     }
 }
