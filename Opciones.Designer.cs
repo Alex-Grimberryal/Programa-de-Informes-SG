@@ -43,6 +43,7 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1276, 692);
             panel1.TabIndex = 0;
+            panel1.Paint += panel1_Paint;
             // 
             // articulos
             // 
@@ -74,6 +75,7 @@
             MyC.TabIndex = 2;
             MyC.Text = "Marcas y Categorias";
             MyC.UseVisualStyleBackColor = false;
+            MyC.Click += MyC_Click;
             // 
             // tec
             // 
@@ -89,6 +91,7 @@
             tec.TabIndex = 3;
             tec.Text = "Tecnicos";
             tec.UseVisualStyleBackColor = false;
+            tec.Click += tec_Click;
             // 
             // usuarios
             // 
@@ -104,6 +107,7 @@
             usuarios.TabIndex = 2;
             usuarios.Text = "Usuarios";
             usuarios.UseVisualStyleBackColor = false;
+            usuarios.Click += usuarios_Click;
             // 
             // expPDF
             // 
