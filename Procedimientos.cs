@@ -8,6 +8,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
     internal class Procedimientos
     {
         private SqlConnection Conexion = new SqlConnection(@"Server=LAPTOP-3R8N4QM6\SQLEXPRESS;Database=NSG; Integrated Security=True; TrustServerCertificate=True");
+        
 
         public int Login(string txtUser, string txtPassword)
         {
@@ -40,19 +41,46 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             return -1;
         }
 
-        public void InsertarUsuario(string nombre, string contrasena, int roles_idrol)
+        public void InsertarUsuario(string nombre, string contrasena, int rol)
         {
-            using (SqlConnection connection = Conexion )
+            try
             {
-                SqlCommand command = new SqlCommand("InsertarUsuario", connection);
+                Conexion.ConnectionString = @"Server=LAPTOP-3R8N4QM6\SQLEXPRESS;Database=NSG; Integrated Security=True; TrustServerCertificate=True";
+                Conexion.Open();
+
+                SqlCommand command = new SqlCommand("InsertarUsuario", Conexion);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@Nombre", nombre);
                 command.Parameters.AddWithValue("@Contrasena", contrasena);
-                command.Parameters.AddWithValue("@RolesIdRol", roles_idrol);
-                connection.Open();
+                command.Parameters.AddWithValue("@Rol", rol);
+
+                SqlParameter returnParameter = command.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                returnParameter.Direction = ParameterDirection.ReturnValue;
+
                 command.ExecuteNonQuery();
+
+                int returnValue = Convert.ToInt32(returnParameter.Value);
+
+                if (returnValue == 0)
+                {
+                    MessageBox.Show("Usuario insertado correctamente.");
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo insertar el usuario.");
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                Conexion.Close();
             }
         }
+            
+        
 
         public void ModificarUsuario(string nombre, string contrasena, int roles_idrol)
         {
@@ -63,9 +91,11 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 command.Parameters.AddWithValue("@Nombre", nombre);
                 command.Parameters.AddWithValue("@Contrasena", contrasena);             
                 command.Parameters.AddWithValue("@RolesIdRol", roles_idrol);
+
                 connection.Open();
                 string result = (string)command.ExecuteScalar();
                 Console.WriteLine(result);
+
             }
         }
 

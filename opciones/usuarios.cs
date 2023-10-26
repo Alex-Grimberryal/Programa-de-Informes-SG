@@ -69,21 +69,24 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
 
         private void InUsusario_Click(object sender, EventArgs e)
         {
-            int roles_idrol = 0;
+            List<int> rolesSeleccionados = new List<int>();
+
             if (checkBoxAdmin.Checked)
             {
-                roles_idrol += 1;
+                rolesSeleccionados.Add(1);
             }
             if (checkBoxOper.Checked)
             {
-                roles_idrol += 2;
+                rolesSeleccionados.Add(2);
             }
+
+            int roles_idrol = rolesSeleccionados.Count > 0 ? rolesSeleccionados.Aggregate((x, y) => x | y) : 0;
 
             string nombre = txtnombre.Text;
             string contrasena = txtContrasena.Text;
             int rol = roles_idrol;
             // Llamar al método de inserción de usuario de la clase usuarios
-            proc.InsertarUsuario(nombre, contrasena, roles_idrol);
+            proc.InsertarUsuario(nombre, contrasena, rol);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
