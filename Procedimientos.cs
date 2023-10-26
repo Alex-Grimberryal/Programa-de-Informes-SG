@@ -39,5 +39,65 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
             return -1;
         }
+
+        public void InsertarUsuario(string nombre, string contrasena, int roles_idrol)
+        {
+            using (SqlConnection connection = Conexion )
+            {
+                SqlCommand command = new SqlCommand("InsertarUsuario", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Nombre", nombre);
+                command.Parameters.AddWithValue("@Contrasena", contrasena);
+                command.Parameters.AddWithValue("@RolesIdRol", roles_idrol);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void ModificarUsuario(string nombre, string contrasena, int roles_idrol)
+        {
+            using (SqlConnection connection = Conexion)
+            {
+                SqlCommand command = new SqlCommand("ModificarUsuario", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Nombre", nombre);
+                command.Parameters.AddWithValue("@Contrasena", contrasena);             
+                command.Parameters.AddWithValue("@RolesIdRol", roles_idrol);
+                connection.Open();
+                string result = (string)command.ExecuteScalar();
+                Console.WriteLine(result);
+            }
+        }
+
+        public void BorrarUsuario(string nombre)
+        {
+            using (SqlConnection connection = Conexion)
+            {
+                SqlCommand command = new SqlCommand("BorrarUsuario", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Nombre", nombre);
+
+                connection.Open();
+                string result = (string)command.ExecuteScalar();
+                Console.WriteLine(result);
+            }
+        }
+
+        public DataTable ObtenerUsuarios()
+        {
+            using (SqlConnection connection = Conexion)
+            {
+                SqlCommand command = new SqlCommand("SELECT u.nombre, u.contrasena, r.rol FROM usuarios u JOIN roles r ON u.roles_idrol = r.idrol", connection);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                DataTable dataTable = new DataTable();
+                dataTable.Load(reader);
+
+                return dataTable;
+            }
+        }
+
     }
 }

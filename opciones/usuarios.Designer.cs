@@ -28,13 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             VistaUser = new DataGridView();
             InUsusario = new Button();
             EdUsuario = new Button();
             ElUsuario = new Button();
             label3 = new Label();
-            nombre = new TextBox();
-            Contrasena = new TextBox();
+            txtnombre = new TextBox();
+            txtContrasena = new TextBox();
             checkBoxAdmin = new CheckBox();
             checkBoxOper = new CheckBox();
             label1 = new Label();
@@ -45,6 +46,14 @@
             // 
             VistaUser.BackgroundColor = SystemColors.ActiveCaption;
             VistaUser.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.ButtonHighlight;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            VistaUser.DefaultCellStyle = dataGridViewCellStyle1;
             VistaUser.GridColor = SystemColors.GradientActiveCaption;
             VistaUser.Location = new Point(720, 14);
             VistaUser.Name = "VistaUser";
@@ -110,25 +119,25 @@
             label3.TabIndex = 6;
             label3.Text = "Ingrese Datos";
             // 
-            // nombre
+            // txtnombre
             // 
-            nombre.Font = new Font("Bahnschrift SemiBold SemiConden", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
-            nombre.Location = new Point(27, 132);
-            nombre.Name = "nombre";
-            nombre.PlaceholderText = "Ingrese Nombre de Usuario";
-            nombre.Size = new Size(646, 35);
-            nombre.TabIndex = 7;
-            nombre.TextChanged += textBox1_TextChanged;
+            txtnombre.Font = new Font("Bahnschrift SemiBold SemiConden", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
+            txtnombre.Location = new Point(27, 132);
+            txtnombre.Name = "txtnombre";
+            txtnombre.PlaceholderText = "Ingrese Nombre de Usuario";
+            txtnombre.Size = new Size(646, 35);
+            txtnombre.TabIndex = 7;
+            txtnombre.TextChanged += textBox1_TextChanged;
             // 
-            // Contrasena
+            // txtContrasena
             // 
-            Contrasena.Font = new Font("Bahnschrift SemiBold SemiConden", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
-            Contrasena.Location = new Point(27, 195);
-            Contrasena.Name = "Contrasena";
-            Contrasena.PlaceholderText = "Ingrese Contraseña (solo letras y numeros)";
-            Contrasena.Size = new Size(646, 35);
-            Contrasena.TabIndex = 8;
-            Contrasena.TextChanged += textBox1_TextChanged_1;
+            txtContrasena.Font = new Font("Bahnschrift SemiBold SemiConden", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
+            txtContrasena.Location = new Point(27, 195);
+            txtContrasena.Name = "txtContrasena";
+            txtContrasena.PlaceholderText = "Ingrese Contraseña (solo letras y numeros)";
+            txtContrasena.Size = new Size(646, 35);
+            txtContrasena.TabIndex = 8;
+            txtContrasena.TextChanged += textBox1_TextChanged_1;
             // 
             // checkBoxAdmin
             // 
@@ -140,6 +149,7 @@
             checkBoxAdmin.TabIndex = 9;
             checkBoxAdmin.Text = "Administrador";
             checkBoxAdmin.UseVisualStyleBackColor = true;
+            checkBoxAdmin.CheckedChanged += checkBoxAdmin_CheckedChanged;
             // 
             // checkBoxOper
             // 
@@ -151,6 +161,7 @@
             checkBoxOper.TabIndex = 10;
             checkBoxOper.Text = "Operario";
             checkBoxOper.UseVisualStyleBackColor = true;
+            checkBoxOper.CheckedChanged += checkBoxOper_CheckedChanged;
             // 
             // label1
             // 
@@ -171,8 +182,8 @@
             Controls.Add(label1);
             Controls.Add(checkBoxOper);
             Controls.Add(checkBoxAdmin);
-            Controls.Add(Contrasena);
-            Controls.Add(nombre);
+            Controls.Add(txtContrasena);
+            Controls.Add(txtnombre);
             Controls.Add(label3);
             Controls.Add(ElUsuario);
             Controls.Add(EdUsuario);
@@ -193,10 +204,13 @@
         private Button EdUsuario;
         private Button ElUsuario;
         private Label label3;
-        private TextBox nombre;
-        private TextBox Contrasena;
+        private TextBox txtnombre;
+        private TextBox txtContrasena;
         private CheckBox checkBoxAdmin;
         private CheckBox checkBoxOper;
         private Label label1;
+        private DataGridViewTextBoxColumn Nombre;
+        private DataGridViewTextBoxColumn contrasena;
+        private DataGridViewTextBoxColumn Rol;
     }
 }

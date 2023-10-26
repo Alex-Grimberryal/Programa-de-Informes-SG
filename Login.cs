@@ -27,7 +27,30 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
         }
 
+        private void txtUser_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                PerformLogin();
+                e.Handled = true; // Evita que se produzca el sonido de Windows al presionar Enter
+            }
+        }
+
+        private void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                PerformLogin();
+                e.Handled = true; // Evita que se produzca el sonido de Windows al presionar Enter
+            }
+        }
+
         private void btnLogin_Click(object sender, EventArgs e)
+        {
+            PerformLogin();
+        }
+
+        private void PerformLogin()
         {
             int result = proc.Login(txtUser.Text, txtPassword.Text);
 
@@ -40,9 +63,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             else if (result == 0)
             {
                 MessageBox.Show("Usuario o contraseña incorrectos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
             }
-
         }
 
         private void Login_Load(object sender, EventArgs e)
