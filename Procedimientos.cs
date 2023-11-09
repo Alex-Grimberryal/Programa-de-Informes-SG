@@ -10,6 +10,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
         public string server = "Data Source=LAPTOP-3R8N4QM6\\SQLEXPRESS; Initial Catalog=NSG; Integrated Security=True; TrustServerCertificate=True";
         public SqlConnection Conexion = new SqlConnection(@"Server=LAPTOP-3R8N4QM6\SQLEXPRESS;Database=NSG; Integrated Security=True; TrustServerCertificate=True");
         
+        //Procedimiento de inicio de sesion
 
         public int Login(string txtUser, string txtPassword)
         {
@@ -41,6 +42,8 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
             return -1;
         }
+
+        //Procedimientos para los usuarios
 
         public void InsertarUsuario(string nombre, string contrasena, string rol)
         {
@@ -134,6 +137,56 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             }
         }
 
+        //Precedimientos para los articulos
+
+        public void InsertarArticulo(string nombre, decimal precio, string marca, string categoria)
+{
+    try
+    {
+        using (SqlConnection connection = new SqlConnection(server))
+        {
+            connection.Open();
+
+            SqlCommand command = new SqlCommand("InsertarArticulo", connection);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@Nombre", nombre);
+            command.Parameters.AddWithValue("@Precio", precio);
+            command.Parameters.AddWithValue("@Marca", marca);
+            command.Parameters.AddWithValue("@Categoria", categoria);
+
+            SqlParameter returnParameter = command.Parameters.Add("@ReturnVal", SqlDbType.Int);
+            returnParameter.Direction = ParameterDirection.ReturnValue;
+
+            command.ExecuteNonQuery();
+
+            int returnValue = Convert.ToInt32(returnParameter.Value);
+
+            if (returnValue == 0)
+            {
+                MessageBox.Show("Artículo insertado correctamente.");
+            }
+            else if (returnValue == 1)
+            {
+                MessageBox.Show("La marca especificada no existe en la tabla marca.");
+            }
+            else if (returnValue == 2)
+            {
+                MessageBox.Show("La categoría especificada no existe en la tabla categoria.");
+            }
+            else
+            {
+                MessageBox.Show("No se pudo insertar el artículo.");
+            }
+        }
+    }
+    catch (Exception e)
+    {
+        MessageBox.Show(e.Message);
+    }
+}
+
+        //Obtencion de datos para visualizarce en DataGridViews
+
         public DataTable ObtenerUsuarios()
         {
             using (SqlConnection connection = new SqlConnection(server))
@@ -147,6 +200,70 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 dataTable.Load(reader);
 
                 
+
+                return dataTable;
+            }
+        }
+
+        public DataTable ObtenerCategorias()
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                SqlCommand command = new SqlCommand("SELECT idcategoria, categoria FROM categoria", connection);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                DataTable dataTable = new DataTable();
+                dataTable.Load(reader);
+
+                return dataTable;
+            }
+        }
+
+        public DataTable ObtenerMarcas()
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                SqlCommand command = new SqlCommand("SELECT idmarca, marca FROM marca", connection);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                DataTable dataTable = new DataTable();
+                dataTable.Load(reader);
+
+                return dataTable;
+            }
+        }
+
+        public DataTable ObtenerArticulos()
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                SqlCommand command = new SqlCommand("SELECT a.nombre AS nombre_articulo, a.precio, c.categoria, m.marca FROM articulos a INNER JOIN categoria c ON a.categoria_idcategoria = c.idcategoria INNER JOIN marca m ON a.marca_idmarca = m.idmarca;", connection);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                DataTable dataTable = new DataTable();
+                dataTable.Load(reader);
+
+                return dataTable;
+            }
+        }
+
+        public DataTable ObtenerTecnicos()
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                SqlCommand command = new SqlCommand("SELECT idTecnico, dni_tecnico, nombres, apellido_paterno, apellido_materno, telefono FROM tecnico", connection);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                DataTable dataTable = new DataTable();
+                dataTable.Load(reader);
 
                 return dataTable;
             }
