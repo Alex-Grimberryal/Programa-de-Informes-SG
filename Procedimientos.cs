@@ -185,6 +185,49 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
     }
 }
 
+        public void ModificarArticulo(int idArticulo, string nombre, decimal precio, string marca, string categoria)
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                using (SqlCommand command = new SqlCommand("ModificarArticulo", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Agregar los parámetros al comando
+                    command.Parameters.AddWithValue("@IdArticulo", idArticulo);
+                    command.Parameters.AddWithValue("@Nombre", nombre);
+                    command.Parameters.AddWithValue("@Precio", precio);
+                    command.Parameters.AddWithValue("@Marca", marca);
+                    command.Parameters.AddWithValue("@Categoria", categoria);
+
+                    connection.Open();
+                    string result = (string)command.ExecuteScalar();
+
+                    Console.WriteLine(result);
+                }
+            }
+        }
+
+        public void BorrarArticulo(int idArticulo)
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                using (SqlCommand command = new SqlCommand("BorrarArticulo", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Agregar el parámetro al comando
+                    command.Parameters.AddWithValue("@IdArticulo", idArticulo);
+
+                    connection.Open();
+                    string result = (string)command.ExecuteScalar();
+
+                    Console.WriteLine(result);
+                    connection.Close();
+                }
+            }
+        }
+
         //Obtencion de datos para visualizarce en DataGridViews
 
         public DataTable ObtenerUsuarios()
@@ -241,7 +284,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
         {
             using (SqlConnection connection = new SqlConnection(server))
             {
-                SqlCommand command = new SqlCommand("SELECT a.nombre AS nombre_articulo, a.precio, c.categoria, m.marca FROM articulos a INNER JOIN categoria c ON a.categoria_idcategoria = c.idcategoria INNER JOIN marca m ON a.marca_idmarca = m.idmarca;", connection);
+                SqlCommand command = new SqlCommand("SELECT a.idarticulo, a.nombre AS nombre_articulo, a.precio, c.categoria, m.marca FROM articulos a INNER JOIN categoria c ON a.categoria_idcategoria = c.idcategoria INNER JOIN marca m ON a.marca_idmarca = m.idmarca;", connection);
                 connection.Open();
 
                 SqlDataReader reader = command.ExecuteReader();

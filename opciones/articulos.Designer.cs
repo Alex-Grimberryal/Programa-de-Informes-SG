@@ -107,6 +107,7 @@
             VistaArticulos.RowTemplate.Height = 29;
             VistaArticulos.Size = new Size(777, 655);
             VistaArticulos.TabIndex = 7;
+            VistaArticulos.SelectionChanged += VistaArticulos_SelectionChanged;
             // 
             // label3
             // 
