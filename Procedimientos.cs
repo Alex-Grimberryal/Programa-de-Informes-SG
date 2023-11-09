@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 using Microsoft.Data.SqlClient;
 
 namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
@@ -140,50 +141,50 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
         //Precedimientos para los articulos
 
         public void InsertarArticulo(string nombre, decimal precio, string marca, string categoria)
-{
-    try
-    {
-        using (SqlConnection connection = new SqlConnection(server))
         {
-            connection.Open();
-
-            SqlCommand command = new SqlCommand("InsertarArticulo", connection);
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@Nombre", nombre);
-            command.Parameters.AddWithValue("@Precio", precio);
-            command.Parameters.AddWithValue("@Marca", marca);
-            command.Parameters.AddWithValue("@Categoria", categoria);
-
-            SqlParameter returnParameter = command.Parameters.Add("@ReturnVal", SqlDbType.Int);
-            returnParameter.Direction = ParameterDirection.ReturnValue;
-
-            command.ExecuteNonQuery();
-
-            int returnValue = Convert.ToInt32(returnParameter.Value);
-
-            if (returnValue == 0)
+            try
             {
-                MessageBox.Show("Artículo insertado correctamente.");
+                using (SqlConnection connection = new SqlConnection(server))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand("InsertarArticulo", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Nombre", nombre);
+                    command.Parameters.AddWithValue("@Precio", precio);
+                    command.Parameters.AddWithValue("@Marca", marca);
+                    command.Parameters.AddWithValue("@Categoria", categoria);
+
+                    SqlParameter returnParameter = command.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+
+                    command.ExecuteNonQuery();
+
+                    int returnValue = Convert.ToInt32(returnParameter.Value);
+
+                    if (returnValue == 0)
+                    {
+                        MessageBox.Show("Artículo insertado correctamente.");
+                    }
+                    else if (returnValue == 1)
+                    {
+                        MessageBox.Show("La marca especificada no existe en la tabla marca.");
+                    }
+                    else if (returnValue == 2)
+                    {
+                        MessageBox.Show("La categoría especificada no existe en la tabla categoria.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo insertar el artículo.");
+                    }
+                }
             }
-            else if (returnValue == 1)
+            catch (Exception e)
             {
-                MessageBox.Show("La marca especificada no existe en la tabla marca.");
-            }
-            else if (returnValue == 2)
-            {
-                MessageBox.Show("La categoría especificada no existe en la tabla categoria.");
-            }
-            else
-            {
-                MessageBox.Show("No se pudo insertar el artículo.");
+                MessageBox.Show(e.Message);
             }
         }
-    }
-    catch (Exception e)
-    {
-        MessageBox.Show(e.Message);
-    }
-}
 
         public void ModificarArticulo(int idArticulo, string nombre, decimal precio, string marca, string categoria)
         {
@@ -218,6 +219,158 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
                     // Agregar el parámetro al comando
                     command.Parameters.AddWithValue("@IdArticulo", idArticulo);
+
+                    connection.Open();
+                    string result = (string)command.ExecuteScalar();
+
+                    Console.WriteLine(result);
+                    connection.Close();
+                }
+            }
+        }
+
+        //Procedimientos para las marcas y categorias
+
+        public void InsertarCategoria(string categoria)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(server))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand("InsertarCategorias", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@categoria", categoria);
+
+                    SqlParameter returnParameter = command.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+
+                    command.ExecuteNonQuery();
+
+                    int returnValue = Convert.ToInt32(returnParameter.Value);
+
+                    if (returnValue == 0)
+                    {
+                        MessageBox.Show("Categoria insertada correctamente.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("La categoria especificada no existe en la base de datos.");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        public void InsertarMarca(string marca)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(server))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand("InsertarMarca", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@marca", marca);
+
+                    SqlParameter returnParameter = command.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+
+                    command.ExecuteNonQuery();
+
+                    int returnValue = Convert.ToInt32(returnParameter.Value);
+
+                    if (returnValue == 0)
+                    {
+                        MessageBox.Show("Marca insertada correctamente.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("La marca especificada no existe en la base de datos.");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        public void ModificarCategoria(int idCategoria, string categoria)
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                using (SqlCommand command = new SqlCommand("ModificarCategoria", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Agregar los parámetros al comando
+                    command.Parameters.AddWithValue("@IdCategoria", idCategoria);
+                    command.Parameters.AddWithValue("@Categoria", categoria);
+
+                    connection.Open();
+                    string result = (string)command.ExecuteScalar();
+
+                    Console.WriteLine(result);
+                }
+            }
+        }
+
+        public void ModificarMarca(int idMarca, string marca)
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                using (SqlCommand command = new SqlCommand("ModificarMarca", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Agregar los parámetros al comando
+                    command.Parameters.AddWithValue("@IdMarca", idMarca);
+                    command.Parameters.AddWithValue("@marca", marca);
+
+                    connection.Open();
+                    string result = (string)command.ExecuteScalar();
+
+                    Console.WriteLine(result);
+                }
+            }
+        }
+
+        public void BorrarCategoria(int idCategoria)
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                using (SqlCommand command = new SqlCommand("BorrarCategoria", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Agregar el parámetro al comando
+                    command.Parameters.AddWithValue("@IdCategoria", idCategoria);
+
+                    connection.Open();
+                    string result = (string)command.ExecuteScalar();
+
+                    Console.WriteLine(result);
+                    connection.Close();
+                }
+            }
+        }
+
+        public void BorrarMarca(int idMarca)
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                using (SqlCommand command = new SqlCommand("BorrarMarca", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Agregar el parámetro al comando
+                    command.Parameters.AddWithValue("@IdMarca", idMarca);
 
                     connection.Open();
                     string result = (string)command.ExecuteScalar();
