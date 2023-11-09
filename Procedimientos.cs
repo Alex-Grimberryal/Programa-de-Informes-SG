@@ -7,7 +7,8 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 {
     internal class Procedimientos
     {
-        private SqlConnection Conexion = new SqlConnection(@"Server=LAPTOP-3R8N4QM6\SQLEXPRESS;Database=NSG; Integrated Security=True; TrustServerCertificate=True");
+        public string server = "Data Source=LAPTOP-3R8N4QM6\\SQLEXPRESS; Initial Catalog=NSG; Integrated Security=True; TrustServerCertificate=True";
+        public SqlConnection Conexion = new SqlConnection(@"Server=LAPTOP-3R8N4QM6\SQLEXPRESS;Database=NSG; Integrated Security=True; TrustServerCertificate=True");
         
 
         public int Login(string txtUser, string txtPassword)
@@ -41,11 +42,11 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             return -1;
         }
 
-        public void InsertarUsuario(string nombre, string contrasena, int rol)
+        public void InsertarUsuario(string nombre, string contrasena, string rol)
         {
             try
             {
-                Conexion.ConnectionString = @"Server=LAPTOP-3R8N4QM6\SQLEXPRESS;Database=NSG; Integrated Security=True; TrustServerCertificate=True";
+                Conexion.ConnectionString = server;
                 Conexion.Open();
 
                 SqlCommand command = new SqlCommand("InsertarUsuario", Conexion);
@@ -79,45 +80,65 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 Conexion.Close();
             }
         }
-            
-        
 
-        public void ModificarUsuario(string nombre, string contrasena, int roles_idrol)
+        public void ModificarUsuario(int idUsuario, string nombre, string contrasena, string rol)
         {
-            using (SqlConnection connection = Conexion)
+            using (SqlConnection connection = new SqlConnection(server))
             {
-                SqlCommand command = new SqlCommand("ModificarUsuario", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@Nombre", nombre);
-                command.Parameters.AddWithValue("@Contrasena", contrasena);             
-                command.Parameters.AddWithValue("@RolesIdRol", roles_idrol);
+                using (SqlCommand command = new SqlCommand("ModificarUsuario", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
 
-                connection.Open();
-                string result = (string)command.ExecuteScalar();
-                Console.WriteLine(result);
+                    // Agregar los parámetros al comando
+                    command.Parameters.AddWithValue("@IdUsuario", idUsuario);
+                    command.Parameters.AddWithValue("@Nombre", nombre);
+                    command.Parameters.AddWithValue("@Contrasena", contrasena);
+                    command.Parameters.AddWithValue("@Rol", rol);
 
+                    // Agregar parámetro de retorno para recibir el valor de @@ROWCOUNT
+                    SqlParameter rowCountParameter = new SqlParameter("@RowCount", SqlDbType.Int);
+                    rowCountParameter.Direction = ParameterDirection.ReturnValue;
+                    command.Parameters.Add(rowCountParameter);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+
+                    // Obtener el valor de @@ROWCOUNT
+                    int rowCount = (int)rowCountParameter.Value;
+
+                    if (rowCount > 0)
+                    {
+                        Console.WriteLine("El usuario se modificó correctamente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se pudo modificar el usuario. Verifique los datos proporcionados.");
+                    }
+                }
             }
         }
 
-        public void BorrarUsuario(string nombre)
+        public void BorrarUsuario(int idUsuario, string nombre)
         {
-            using (SqlConnection connection = Conexion)
+            using (SqlConnection connection = new SqlConnection(server))
             {
                 SqlCommand command = new SqlCommand("BorrarUsuario", connection);
                 command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@idUsuario", idUsuario);
                 command.Parameters.AddWithValue("@Nombre", nombre);
 
                 connection.Open();
                 string result = (string)command.ExecuteScalar();
-                Console.WriteLine(result);
+                MessageBox.Show(result, "Resultado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
             }
         }
 
         public DataTable ObtenerUsuarios()
         {
-            using (SqlConnection connection = Conexion)
+            using (SqlConnection connection = new SqlConnection(server))
             {
-                SqlCommand command = new SqlCommand("SELECT u.nombre, u.contrasena, r.rol FROM usuarios u JOIN roles r ON u.roles_idrol = r.idrol", connection);
+                SqlCommand command = new SqlCommand("SELECT u.iduser, u.nombre, u.contrasena, roles.rol FROM usuarios u JOIN roles ON u.roles_idrol = roles.idrol", connection);
                 connection.Open();
 
                 SqlDataReader reader = command.ExecuteReader();
@@ -125,9 +146,10 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 DataTable dataTable = new DataTable();
                 dataTable.Load(reader);
 
+                
+
                 return dataTable;
             }
         }
-
     }
 }

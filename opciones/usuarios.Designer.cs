@@ -36,9 +36,8 @@
             label3 = new Label();
             txtnombre = new TextBox();
             txtContrasena = new TextBox();
-            checkBoxAdmin = new CheckBox();
-            checkBoxOper = new CheckBox();
             label1 = new Label();
+            comboBox1 = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)VistaUser).BeginInit();
             SuspendLayout();
             // 
@@ -62,6 +61,7 @@
             VistaUser.Size = new Size(536, 655);
             VistaUser.TabIndex = 0;
             VistaUser.CellContentClick += VistaUser_CellContentClick;
+            VistaUser.SelectionChanged += VistaUser_SelectionChanged;
             // 
             // InUsusario
             // 
@@ -139,30 +139,6 @@
             txtContrasena.TabIndex = 8;
             txtContrasena.TextChanged += textBox1_TextChanged_1;
             // 
-            // checkBoxAdmin
-            // 
-            checkBoxAdmin.AutoSize = true;
-            checkBoxAdmin.Font = new Font("Bahnschrift Condensed", 16.2F, FontStyle.Bold, GraphicsUnit.Point);
-            checkBoxAdmin.Location = new Point(231, 333);
-            checkBoxAdmin.Name = "checkBoxAdmin";
-            checkBoxAdmin.Size = new Size(170, 38);
-            checkBoxAdmin.TabIndex = 9;
-            checkBoxAdmin.Text = "Administrador";
-            checkBoxAdmin.UseVisualStyleBackColor = true;
-            checkBoxAdmin.CheckedChanged += checkBoxAdmin_CheckedChanged;
-            // 
-            // checkBoxOper
-            // 
-            checkBoxOper.AutoSize = true;
-            checkBoxOper.Font = new Font("Bahnschrift Condensed", 16.2F, FontStyle.Bold, GraphicsUnit.Point);
-            checkBoxOper.Location = new Point(231, 396);
-            checkBoxOper.Name = "checkBoxOper";
-            checkBoxOper.Size = new Size(118, 38);
-            checkBoxOper.TabIndex = 10;
-            checkBoxOper.Text = "Operario";
-            checkBoxOper.UseVisualStyleBackColor = true;
-            checkBoxOper.CheckedChanged += checkBoxOper_CheckedChanged;
-            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -174,14 +150,22 @@
             label1.Text = "Seleccione el tipo de Accesibilidad";
             label1.Click += label1_Click;
             // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(27, 353);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(646, 28);
+            comboBox1.TabIndex = 12;
+            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            // 
             // usuarios
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.RoyalBlue;
+            Controls.Add(comboBox1);
             Controls.Add(label1);
-            Controls.Add(checkBoxOper);
-            Controls.Add(checkBoxAdmin);
             Controls.Add(txtContrasena);
             Controls.Add(txtnombre);
             Controls.Add(label3);
@@ -206,11 +190,10 @@
         private Label label3;
         private TextBox txtnombre;
         private TextBox txtContrasena;
-        private CheckBox checkBoxAdmin;
-        private CheckBox checkBoxOper;
         private Label label1;
         private DataGridViewTextBoxColumn Nombre;
         private DataGridViewTextBoxColumn contrasena;
         private DataGridViewTextBoxColumn Rol;
+        private ComboBox comboBox1;
     }
 }
