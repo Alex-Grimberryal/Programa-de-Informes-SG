@@ -50,7 +50,7 @@
             ElArticulo.FlatAppearance.BorderSize = 0;
             ElArticulo.FlatStyle = FlatStyle.Flat;
             ElArticulo.Font = new Font("Bahnschrift SemiBold SemiConden", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            ElArticulo.Location = new Point(296, 591);
+            ElArticulo.Location = new Point(323, 591);
             ElArticulo.Name = "ElArticulo";
             ElArticulo.Size = new Size(129, 73);
             ElArticulo.TabIndex = 6;
@@ -65,7 +65,7 @@
             ModArticulo.FlatAppearance.BorderSize = 0;
             ModArticulo.FlatStyle = FlatStyle.Flat;
             ModArticulo.Font = new Font("Bahnschrift SemiBold SemiConden", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            ModArticulo.Location = new Point(161, 591);
+            ModArticulo.Location = new Point(173, 591);
             ModArticulo.Name = "ModArticulo";
             ModArticulo.Size = new Size(129, 73);
             ModArticulo.TabIndex = 5;

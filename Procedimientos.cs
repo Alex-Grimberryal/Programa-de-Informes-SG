@@ -381,6 +381,138 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             }
         }
 
+        //Procedimientos para los tecnicos
+
+        public void InsertarTecnico(string dni, string nombres, string apellidoPaterno, string apellidoMaterno, string telefono)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(server))
+                {
+                    connection.Open();
+
+                    // Verificar si el DNI ya existe en la base de datos
+                    SqlCommand checkCommand = new SqlCommand("SELECT COUNT(*) FROM tecnico WHERE dni_tecnico = @DNI", connection);
+                    checkCommand.Parameters.AddWithValue("@DNI", dni);
+                    int dniCount = (int)checkCommand.ExecuteScalar();
+
+                    if (dniCount > 0)
+                    {
+                        MessageBox.Show("El DNI ya está registrado. Por favor, ingrese un DNI válido.");
+                        return;
+                    }
+
+                    // Insertar el técnico si el DNI no se repite
+                    SqlCommand insertCommand = new SqlCommand("InsertarTecnico", connection);
+                    insertCommand.CommandType = CommandType.StoredProcedure;
+                    insertCommand.Parameters.AddWithValue("@DNI", dni);
+                    insertCommand.Parameters.AddWithValue("@Nombres", nombres);
+                    insertCommand.Parameters.AddWithValue("@ApellidoPaterno", apellidoPaterno);
+                    insertCommand.Parameters.AddWithValue("@ApellidoMaterno", apellidoMaterno);
+                    insertCommand.Parameters.AddWithValue("@Telefono", telefono);
+
+                    insertCommand.ExecuteNonQuery();
+
+                    MessageBox.Show("Técnico insertado correctamente.");
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        public void ModificarTecnico(int idTecnico, string dni, string nombres, string apellidoPaterno, string apellidoMaterno, string telefono)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(server))
+                {
+                    connection.Open();
+
+                    // Verificar si el DNI ya existe en otro técnico
+                    SqlCommand checkCommand = new SqlCommand("SELECT COUNT(*) FROM tecnico WHERE dni_tecnico = @DNI AND idTecnico != @IdTecnico", connection);
+                    checkCommand.Parameters.AddWithValue("@DNI", dni);
+                    checkCommand.Parameters.AddWithValue("@IdTecnico", idTecnico);
+                    int dniCount = (int)checkCommand.ExecuteScalar();
+
+                    if (dniCount > 0)
+                    {
+                        MessageBox.Show("El DNI ya está registrado en otro técnico. Por favor, ingrese un DNI válido.");
+                        return;
+                    }
+
+                    // Modificar el técnico si el DNI no se repite
+                    SqlCommand modifyCommand = new SqlCommand("ModificarTecnico", connection);
+                    modifyCommand.CommandType = CommandType.StoredProcedure;
+                    modifyCommand.Parameters.AddWithValue("@IdTecnico", idTecnico);
+                    modifyCommand.Parameters.AddWithValue("@DNI", dni);
+                    modifyCommand.Parameters.AddWithValue("@Nombres", nombres);
+                    modifyCommand.Parameters.AddWithValue("@ApellidoPaterno", apellidoPaterno);
+                    modifyCommand.Parameters.AddWithValue("@ApellidoMaterno", apellidoMaterno);
+                    modifyCommand.Parameters.AddWithValue("@Telefono", telefono);
+
+                    modifyCommand.ExecuteNonQuery();
+
+                    MessageBox.Show("Técnico modificado correctamente.");
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        public void BorrarTecnico(int idTecnico)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(server))
+                {
+                    connection.Open();
+
+                    // Verificar si el técnico tiene informes relacionados
+                    SqlCommand checkCommand = new SqlCommand("SELECT COUNT(*) FROM informe WHERE tecnico = @IdTecnico", connection);
+                    checkCommand.Parameters.AddWithValue("@IdTecnico", idTecnico);
+                    int informeCount = (int)checkCommand.ExecuteScalar();
+
+                    if (informeCount > 0)
+                    {
+                        // Mostrar mensaje de advertencia
+                        MessageBox.Show("El técnico tiene informes relacionados. La eliminación del técnico también eliminará todos los informes asociados.");
+
+                        // Eliminar los registros relacionados en la tabla art_vend
+                        SqlCommand deleteArtVendCommand = new SqlCommand("DELETE FROM art_vend WHERE info_idInforme IN (SELECT nro_de_informe FROM informe WHERE tecnico = @IdTecnico)", connection);
+                        deleteArtVendCommand.Parameters.AddWithValue("@IdTecnico", idTecnico);
+                        deleteArtVendCommand.ExecuteNonQuery();
+
+                        // Eliminar los informes relacionados
+                        SqlCommand deleteInformeCommand = new SqlCommand("DELETE FROM informe WHERE tecnico = @IdTecnico", connection);
+                        deleteInformeCommand.Parameters.AddWithValue("@IdTecnico", idTecnico);
+                        deleteInformeCommand.ExecuteNonQuery();
+                    }
+
+                    // Eliminar el técnico
+                    SqlCommand deleteTecnicoCommand = new SqlCommand("DELETE FROM tecnico WHERE idTecnico = @IdTecnico", connection);
+                    deleteTecnicoCommand.Parameters.AddWithValue("@IdTecnico", idTecnico);
+                    int rowCount = deleteTecnicoCommand.ExecuteNonQuery();
+
+                    if (rowCount == 0)
+                    {
+                        MessageBox.Show("No se encontró ningún técnico con el ID especificado.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Técnico borrado correctamente.");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
         //Obtencion de datos para visualizarce en DataGridViews
 
         public DataTable ObtenerUsuarios()
