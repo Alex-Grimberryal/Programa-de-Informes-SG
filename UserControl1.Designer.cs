@@ -31,7 +31,6 @@
             panel1 = new Panel();
             monto = new TextBox();
             fecha = new TextBox();
-            ArtSol = new TextBox();
             telefono = new TextBox();
             email = new TextBox();
             cliente = new TextBox();
@@ -53,16 +52,19 @@
             label8 = new Label();
             panel4 = new Panel();
             RegistrarInforme = new Button();
+            panel5 = new Panel();
+            AbrirModalArticulos = new Button();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
+            panel5.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BackColor = Color.DarkBlue;
+            panel1.Controls.Add(panel5);
             panel1.Controls.Add(monto);
             panel1.Controls.Add(fecha);
-            panel1.Controls.Add(ArtSol);
             panel1.Controls.Add(telefono);
             panel1.Controls.Add(email);
             panel1.Controls.Add(cliente);
@@ -83,8 +85,9 @@
             // 
             // monto
             // 
-            monto.BackColor = Color.SteelBlue;
+            monto.BackColor = Color.LightCyan;
             monto.BorderStyle = BorderStyle.None;
+            monto.Font = new Font("Bahnschrift SemiBold Condensed", 12F, FontStyle.Bold, GraphicsUnit.Point);
             monto.Location = new Point(283, 682);
             monto.Multiline = true;
             monto.Name = "monto";
@@ -94,8 +97,9 @@
             // 
             // fecha
             // 
-            fecha.BackColor = Color.SteelBlue;
+            fecha.BackColor = Color.LightCyan;
             fecha.BorderStyle = BorderStyle.None;
+            fecha.Font = new Font("Bahnschrift SemiBold Condensed", 12F, FontStyle.Bold, GraphicsUnit.Point);
             fecha.Location = new Point(283, 621);
             fecha.Multiline = true;
             fecha.Name = "fecha";
@@ -103,53 +107,48 @@
             fecha.TabIndex = 14;
             fecha.TextChanged += textBox6_TextChanged;
             // 
-            // ArtSol
-            // 
-            ArtSol.BackColor = Color.SteelBlue;
-            ArtSol.BorderStyle = BorderStyle.None;
-            ArtSol.Cursor = Cursors.IBeam;
-            ArtSol.Location = new Point(283, 360);
-            ArtSol.Multiline = true;
-            ArtSol.Name = "ArtSol";
-            ArtSol.Size = new Size(294, 235);
-            ArtSol.TabIndex = 13;
-            ArtSol.TextChanged += textBox5_TextChanged;
-            // 
             // telefono
             // 
-            telefono.BackColor = Color.SteelBlue;
+            telefono.BackColor = Color.LightCyan;
             telefono.BorderStyle = BorderStyle.None;
+            telefono.Font = new Font("Bahnschrift SemiBold Condensed", 12F, FontStyle.Bold, GraphicsUnit.Point);
             telefono.Location = new Point(434, 296);
             telefono.Multiline = true;
             telefono.Name = "telefono";
+            telefono.PlaceholderText = "Celular";
             telefono.Size = new Size(143, 36);
             telefono.TabIndex = 12;
             // 
             // email
             // 
-            email.BackColor = Color.SteelBlue;
+            email.BackColor = Color.LightCyan;
             email.BorderStyle = BorderStyle.None;
+            email.Font = new Font("Bahnschrift SemiBold Condensed", 12F, FontStyle.Bold, GraphicsUnit.Point);
             email.Location = new Point(283, 296);
             email.Multiline = true;
             email.Name = "email";
+            email.PlaceholderText = "Correo Electronico";
             email.Size = new Size(128, 36);
             email.TabIndex = 11;
             // 
             // cliente
             // 
-            cliente.BackColor = Color.SteelBlue;
+            cliente.BackColor = Color.LightCyan;
             cliente.BorderStyle = BorderStyle.None;
+            cliente.Font = new Font("Bahnschrift SemiBold SemiConden", 12F, FontStyle.Bold, GraphicsUnit.Point);
             cliente.Location = new Point(283, 236);
             cliente.Multiline = true;
             cliente.Name = "cliente";
+            cliente.PlaceholderText = "Apellido paterno - materno -nombres";
             cliente.Size = new Size(294, 36);
             cliente.TabIndex = 10;
             cliente.TextChanged += textBox2_TextChanged;
             // 
             // nroRegistro
             // 
-            nroRegistro.BackColor = Color.SteelBlue;
+            nroRegistro.BackColor = Color.LightCyan;
             nroRegistro.BorderStyle = BorderStyle.None;
+            nroRegistro.Font = new Font("Bahnschrift SemiBold Condensed", 12F, FontStyle.Bold, GraphicsUnit.Point);
             nroRegistro.Location = new Point(283, 170);
             nroRegistro.Multiline = true;
             nroRegistro.Name = "nroRegistro";
@@ -264,8 +263,9 @@
             // 
             // tecnico
             // 
-            tecnico.BackColor = Color.SteelBlue;
+            tecnico.BackColor = Color.LightCyan;
             tecnico.BorderStyle = BorderStyle.None;
+            tecnico.Font = new Font("Bahnschrift SemiBold Condensed", 12F, FontStyle.Bold, GraphicsUnit.Point);
             tecnico.Location = new Point(284, 335);
             tecnico.Multiline = true;
             tecnico.Name = "tecnico";
@@ -275,8 +275,9 @@
             // 
             // NtAdd
             // 
-            NtAdd.BackColor = Color.SteelBlue;
+            NtAdd.BackColor = Color.LightCyan;
             NtAdd.BorderStyle = BorderStyle.None;
+            NtAdd.Font = new Font("Bahnschrift SemiBold Condensed", 12F, FontStyle.Bold, GraphicsUnit.Point);
             NtAdd.Location = new Point(284, 144);
             NtAdd.Multiline = true;
             NtAdd.Name = "NtAdd";
@@ -286,8 +287,9 @@
             // 
             // direccion
             // 
-            direccion.BackColor = Color.SteelBlue;
+            direccion.BackColor = Color.LightCyan;
             direccion.BorderStyle = BorderStyle.None;
+            direccion.Font = new Font("Bahnschrift SemiBold Condensed", 12F, FontStyle.Bold, GraphicsUnit.Point);
             direccion.Location = new Point(284, 37);
             direccion.Multiline = true;
             direccion.Name = "direccion";
@@ -347,6 +349,26 @@
             RegistrarInforme.UseVisualStyleBackColor = false;
             RegistrarInforme.Click += button1_Click_1;
             // 
+            // panel5
+            // 
+            panel5.BackColor = Color.LightCyan;
+            panel5.Controls.Add(AbrirModalArticulos);
+            panel5.Location = new Point(283, 362);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(294, 241);
+            panel5.TabIndex = 16;
+            // 
+            // AbrirModalArticulos
+            // 
+            AbrirModalArticulos.Font = new Font("Bahnschrift SemiBold Condensed", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            AbrirModalArticulos.Location = new Point(19, 7);
+            AbrirModalArticulos.Name = "AbrirModalArticulos";
+            AbrirModalArticulos.Size = new Size(252, 33);
+            AbrirModalArticulos.TabIndex = 0;
+            AbrirModalArticulos.Text = "Ingresar Articulos";
+            AbrirModalArticulos.UseVisualStyleBackColor = true;
+            AbrirModalArticulos.Click += AbrirModalArticulos_Click;
+            // 
             // UserControl1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -362,6 +384,7 @@
             panel1.PerformLayout();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
+            panel5.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -381,7 +404,6 @@
         private Label label9;
         private Label label8;
         private Label label10;
-        private TextBox ArtSol;
         private TextBox telefono;
         private TextBox email;
         private TextBox cliente;
@@ -392,5 +414,7 @@
         private TextBox tecnico;
         private TextBox NtAdd;
         private Button RegistrarInforme;
+        private Panel panel5;
+        private Button AbrirModalArticulos;
     }
 }

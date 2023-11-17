@@ -40,6 +40,10 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
             VistaArticulos.Columns["categoria"].HeaderText = "Categoria";
             VistaArticulos.Columns["marca"].HeaderText = "Marca";
 
+
+            // Ajustar el ancho de las columnas automáticamente
+            VistaArticulos.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+
             CargarCategorias();
             CargarMarcas();
         }

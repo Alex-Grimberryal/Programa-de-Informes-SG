@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
 {
@@ -116,7 +117,24 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
 
         private void VistaTecnicos_SelectionChanged(object sender, EventArgs e)
         {
+            if (VistaTecnicos.SelectedRows.Count > 0)
+            {
+                // Obtener los valores de las celdas de la fila seleccionada
+                DataGridViewRow selectedRow = VistaTecnicos.SelectedRows[0];
+                idTecnico = Convert.ToInt32(selectedRow.Cells["idtecnico"].Value);
+                string DNI = selectedRow.Cells["dni_tecnico"].Value.ToString();
+                string nombres = selectedRow.Cells["nombres"].Value.ToString();
+                string apellidoPaterno = selectedRow.Cells["apellido_paterno"].Value.ToString();
+                string apellidoMaterno = selectedRow.Cells["apellido_materno"].Value.ToString();
+                string telefono = selectedRow.Cells["telefono"].Value.ToString();
 
+                // Asignar los valores a los campos del formulario
+                txtDNI.Text = DNI;
+                txtnombre.Text = nombres;
+                txtAP.Text = apellidoPaterno;
+                txtAM.Text = apellidoMaterno;
+                txtcelular.Text = telefono;
+            }
         }
     }
 }

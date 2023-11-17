@@ -1,8 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
 using System.Data;
-using System.Data.SqlClient;
-using System.Text.RegularExpressions;
-using Microsoft.Data.SqlClient;
 
 namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 {
@@ -10,7 +7,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
     {
         public string server = "Data Source=LAPTOP-3R8N4QM6\\SQLEXPRESS; Initial Catalog=NSG; Integrated Security=True; TrustServerCertificate=True";
         public SqlConnection Conexion = new SqlConnection(@"Server=LAPTOP-3R8N4QM6\SQLEXPRESS;Database=NSG; Integrated Security=True; TrustServerCertificate=True");
-        
+
         //Procedimiento de inicio de sesion
 
         public int Login(string txtUser, string txtPassword)
@@ -527,7 +524,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 DataTable dataTable = new DataTable();
                 dataTable.Load(reader);
 
-                
+
 
                 return dataTable;
             }
@@ -594,6 +591,188 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 dataTable.Load(reader);
 
                 return dataTable;
+            }
+        }
+
+        public DataTable ObtenerArticulosVendidos(int idInforme)
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                SqlCommand command = new SqlCommand("SELECT * FROM Art_Vend", connection);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                DataTable dataTable = new DataTable();
+                dataTable.Load(reader);
+
+                return dataTable;
+            }
+        }
+
+        public DataTable ObtenerArticulosVendidosPorInforme(int idInforme)
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                SqlCommand command = new SqlCommand("SELECT * FROM Art_Vend WHERE info_idInforme = @idInforme", connection);
+                command.Parameters.AddWithValue("@idInforme", idInforme);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                DataTable dataTable = new DataTable();
+                dataTable.Load(reader);
+
+                return dataTable;
+            }
+        }
+
+        //Procedimientos para los informes
+
+        public DataTable ObtenerInformes()
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                SqlCommand command = new SqlCommand("SELECT i.nro_de_informe, i.nombre_de_cliente, i.apellido_paterno, i.apellido_materno, " +
+                "i.dni, i.telefono, i.email, i.fecha, i.monto_total, i.direccion_instalacion, " +
+                "i.notas_adicionales, u.nombre AS NombreUsuario, t.apellido_paterno AS ApellidoTecnico " +
+                "FROM informe AS i " +
+                "INNER JOIN usuarios AS u ON i.redactor = u.iduser " +
+                "INNER JOIN tecnico AS t ON i.tecnico = t.idTecnico", connection);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                DataTable dataTable = new DataTable();
+                dataTable.Load(reader);
+
+                return dataTable;
+            }
+        }
+
+
+        public DataTable ObtenerInformesPorFecha(DateTime fechaInicio, DateTime fechaFin)
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(server))
+                {
+                    connection.Open();
+
+                    string query = "SELECT i.nro_de_informe, i.nombre_de_cliente, i.apellido_paterno, i.apellido_materno, " +
+                                   "i.dni, i.telefono, i.email, i.fecha, i.monto_total, i.direccion_instalacion, " +
+                                   "i.notas_adicionales, u.nombre, t.apellido_paterno AS apellido_tecnico " +
+                                   "FROM informe AS i " +
+                                   "INNER JOIN usuarios AS u ON i.redactor = u.iduser " +
+                                   "INNER JOIN tecnico AS t ON i.tecnico = t.idTecnico " +
+                                   "WHERE i.fecha >= @FechaInicio AND i.fecha <= @FechaFin " +
+                                   "ORDER BY i.fecha DESC";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@FechaInicio", fechaInicio);
+                        cmd.Parameters.AddWithValue("@FechaFin", fechaFin);
+
+                        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                        adapter.Fill(dataTable);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejar la excepción
+            }
+
+            return dataTable;
+        }
+
+        public int ObtenerSiguienteNumeroInforme()
+        {
+            int siguienteNumeroInforme = 0;
+            string query = "SELECT MAX(nro_de_informe) FROM informe";
+
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    object result = command.ExecuteScalar();
+
+                    if (result != DBNull.Value)
+                    {
+                        siguienteNumeroInforme = Convert.ToInt32(result) + 1;
+                    }
+                    else
+                    {
+                        siguienteNumeroInforme = 1;
+                    }
+                }
+            }
+
+            return siguienteNumeroInforme;
+        }
+
+        public DataTable ObtenerTablaArticulos()
+        {
+            DataTable articulosTable = new DataTable();
+
+            string query = "SELECT idarticulo, nombre FROM articulos";
+
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(articulosTable);
+                    }
+                }
+            }
+
+            return articulosTable;
+        }
+
+        public void InsertarArticulosVendidos(string articulo, string cantidad)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(server))
+                {
+                    connection.Open();
+
+                    // Verificar si el DNI ya existe en la base de datos
+                    SqlCommand checkCommand = new SqlCommand("SELECT COUNT(*) FROM tecnico WHERE dni_tecnico = @DNI", connection);
+                    checkCommand.Parameters.AddWithValue("@DNI", dni);
+                    int dniCount = (int)checkCommand.ExecuteScalar();
+
+                    if (dniCount > 0)
+                    {
+                        MessageBox.Show("El DNI ya está registrado. Por favor, ingrese un DNI válido.");
+                        return;
+                    }
+
+                    // Insertar el técnico si el DNI no se repite
+                    SqlCommand insertCommand = new SqlCommand("InsertarTecnico", connection);
+                    insertCommand.CommandType = CommandType.StoredProcedure;
+                    insertCommand.Parameters.AddWithValue("@DNI", dni);
+                    insertCommand.Parameters.AddWithValue("@Nombres", nombres);
+                    insertCommand.Parameters.AddWithValue("@ApellidoPaterno", apellidoPaterno);
+                    insertCommand.Parameters.AddWithValue("@ApellidoMaterno", apellidoMaterno);
+                    insertCommand.Parameters.AddWithValue("@Telefono", telefono);
+
+                    insertCommand.ExecuteNonQuery();
+
+                    MessageBox.Show("Técnico insertado correctamente.");
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
         }
     }
