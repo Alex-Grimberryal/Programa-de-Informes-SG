@@ -137,7 +137,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
         //Precedimientos para los articulos
 
-        public void InsertarArticulo(string nombre, decimal precio, string marca, string categoria)
+        public void InsertarArticulo(string nombre, decimal precio, string marca, string categoria, int stock)
         {
             try
             {
@@ -151,6 +151,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                     command.Parameters.AddWithValue("@Precio", precio);
                     command.Parameters.AddWithValue("@Marca", marca);
                     command.Parameters.AddWithValue("@Categoria", categoria);
+                    command.Parameters.AddWithValue("@stock", stock);
 
                     SqlParameter returnParameter = command.Parameters.Add("@ReturnVal", SqlDbType.Int);
                     returnParameter.Direction = ParameterDirection.ReturnValue;
@@ -183,7 +184,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             }
         }
 
-        public void ModificarArticulo(int idArticulo, string nombre, decimal precio, string marca, string categoria)
+        public void ModificarArticulo(int idArticulo, string nombre, decimal precio, string marca, string categoria, int stock)
         {
             using (SqlConnection connection = new SqlConnection(server))
             {
@@ -197,6 +198,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                     command.Parameters.AddWithValue("@Precio", precio);
                     command.Parameters.AddWithValue("@Marca", marca);
                     command.Parameters.AddWithValue("@Categoria", categoria);
+                    command.Parameters.AddWithValue("@stock", stock);
 
                     connection.Open();
                     string result = (string)command.ExecuteScalar();
@@ -566,7 +568,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
         {
             using (SqlConnection connection = new SqlConnection(server))
             {
-                SqlCommand command = new SqlCommand("SELECT a.idarticulo, a.nombre AS nombre_articulo, a.precio, c.categoria, m.marca FROM articulos a INNER JOIN categoria c ON a.categoria_idcategoria = c.idcategoria INNER JOIN marca m ON a.marca_idmarca = m.idmarca;", connection);
+                SqlCommand command = new SqlCommand("SELECT a.idarticulo, a.nombre AS nombre_articulo, a.precio, a.stock, c.categoria, m.marca FROM articulos a INNER JOIN categoria c ON a.categoria_idcategoria = c.idcategoria INNER JOIN marca m ON a.marca_idmarca = m.idmarca;", connection);
                 connection.Open();
 
                 SqlDataReader reader = command.ExecuteReader();
@@ -745,25 +747,11 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 {
                     connection.Open();
 
-                    // Verificar si el DNI ya existe en la base de datos
-                    SqlCommand checkCommand = new SqlCommand("SELECT COUNT(*) FROM tecnico WHERE dni_tecnico = @DNI", connection);
-                    checkCommand.Parameters.AddWithValue("@DNI", dni);
-                    int dniCount = (int)checkCommand.ExecuteScalar();
-
-                    if (dniCount > 0)
-                    {
-                        MessageBox.Show("El DNI ya está registrado. Por favor, ingrese un DNI válido.");
-                        return;
-                    }
-
                     // Insertar el técnico si el DNI no se repite
                     SqlCommand insertCommand = new SqlCommand("InsertarTecnico", connection);
                     insertCommand.CommandType = CommandType.StoredProcedure;
-                    insertCommand.Parameters.AddWithValue("@DNI", dni);
-                    insertCommand.Parameters.AddWithValue("@Nombres", nombres);
-                    insertCommand.Parameters.AddWithValue("@ApellidoPaterno", apellidoPaterno);
-                    insertCommand.Parameters.AddWithValue("@ApellidoMaterno", apellidoMaterno);
-                    insertCommand.Parameters.AddWithValue("@Telefono", telefono);
+                    insertCommand.Parameters.AddWithValue("@DNI", articulo);
+                    insertCommand.Parameters.AddWithValue("@Telefono", cantidad);
 
                     insertCommand.ExecuteNonQuery();
 

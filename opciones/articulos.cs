@@ -51,46 +51,56 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
         private void InArticulo_Click(object sender, EventArgs e)
         {
             string nombre = txtnombre.Text;
+            int stock;
             decimal precio;
 
-            if (decimal.TryParse(txtPrecio.Text, out precio))
+            if(int.TryParse(txtStock.Text, out stock))
             {
-                if (CBCategoria.SelectedItem != null)
+                if (decimal.TryParse(txtPrecio.Text, out precio))
                 {
-                    string categoria = CBCategoria.SelectedValue.ToString();
-
-                    if (CBMarca.SelectedItem != null)
+                    if (CBCategoria.SelectedItem != null)
                     {
-                        string marca = CBMarca.SelectedValue.ToString();
+                        string categoria = CBCategoria.SelectedValue.ToString();
 
-                        // Restablecer los campos del formulario después de la inserción
-                        txtnombre.Text = string.Empty;
-                        txtPrecio.Text = string.Empty;
-                        CBCategoria.SelectedIndex = -1;
-                        CBMarca.SelectedIndex = -1;
+                        if (CBMarca.SelectedItem != null)
+                        {
+                            string marca = CBMarca.SelectedValue.ToString();
 
-                        // Llamar al método de inserción de artículo de la clase Procedimientos
-                        proc.InsertarArticulo(nombre, precio, marca, categoria);
+                            // Restablecer los campos del formulario después de la inserción
+                            txtnombre.Text = string.Empty;
+                            txtPrecio.Text = string.Empty;
+                            txtStock.Text = string.Empty;
+                            CBCategoria.SelectedIndex = -1;
+                            CBMarca.SelectedIndex = -1;
 
-                        // Actualizar los artículos en el DataGridView
-                        ActualizarArticulos();
+                            // Llamar al método de inserción de artículo de la clase Procedimientos
+                            proc.InsertarArticulo(nombre, precio, marca, categoria, stock);
+
+                            // Actualizar los artículos en el DataGridView
+                            ActualizarArticulos();
+                        }
+                        else
+                        {
+                            // Mostrar un mensaje de error o realizar alguna acción apropiada
+                            MessageBox.Show("Por favor, seleccione una marca válida.");
+                        }
                     }
                     else
                     {
                         // Mostrar un mensaje de error o realizar alguna acción apropiada
-                        MessageBox.Show("Por favor, seleccione una marca válida.");
+                        MessageBox.Show("Por favor, seleccione una categoría válida.");
                     }
                 }
                 else
                 {
                     // Mostrar un mensaje de error o realizar alguna acción apropiada
-                    MessageBox.Show("Por favor, seleccione una categoría válida.");
+                    MessageBox.Show("Por favor, ingrese un precio válido.");
                 }
             }
             else
             {
                 // Mostrar un mensaje de error o realizar alguna acción apropiada
-                MessageBox.Show("Por favor, ingrese un precio válido.");
+                MessageBox.Show("Por favor, ingrese un stock válido.");
             }
         }
 
@@ -100,46 +110,56 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
         {
 
             string nombre = txtnombre.Text;
+            int stock;
             decimal precio;
 
-            if (decimal.TryParse(txtPrecio.Text, out precio))
+            if (int.TryParse(txtStock.Text, out stock))
             {
-                if (CBCategoria.SelectedItem != null)
+                if (decimal.TryParse(txtPrecio.Text, out precio))
                 {
-                    string categoria = CBCategoria.SelectedValue.ToString();
-
-                    if (CBMarca.SelectedItem != null)
+                    if (CBCategoria.SelectedItem != null)
                     {
-                        string marca = CBMarca.SelectedValue.ToString();
+                        string categoria = CBCategoria.SelectedValue.ToString();
 
-                        // Restablecer los campos del formulario después de la inserción
-                        txtnombre.Text = string.Empty;
-                        txtPrecio.Text = string.Empty;
-                        CBCategoria.SelectedIndex = -1;
-                        CBMarca.SelectedIndex = -1;
+                        if (CBMarca.SelectedItem != null)
+                        {
+                            string marca = CBMarca.SelectedValue.ToString();
 
-                        // Llamar al método de inserción de artículo de la clase Procedimientos
-                        proc.ModificarArticulo(idArticulo, nombre, precio, marca, categoria);
+                            // Restablecer los campos del formulario después de la inserción
+                            txtnombre.Text = string.Empty;
+                            txtPrecio.Text = string.Empty;
+                            txtStock.Text = string.Empty;
+                            CBCategoria.SelectedIndex = -1;
+                            CBMarca.SelectedIndex = -1;
 
-                        // Actualizar los artículos en el DataGridView
-                        ActualizarArticulos();
+                            // Llamar al método de inserción de artículo de la clase Procedimientos
+                            proc.ModificarArticulo(idArticulo, nombre, precio, marca, categoria, stock);
+
+                            // Actualizar los artículos en el DataGridView
+                            ActualizarArticulos();
+                        }
+                        else
+                        {
+                            // Mostrar un mensaje de error o realizar alguna acción apropiada
+                            MessageBox.Show("Por favor, seleccione una marca válida.");
+                        }
                     }
                     else
                     {
                         // Mostrar un mensaje de error o realizar alguna acción apropiada
-                        MessageBox.Show("Por favor, seleccione una marca válida.");
+                        MessageBox.Show("Por favor, seleccione una categoría válida.");
                     }
                 }
                 else
                 {
                     // Mostrar un mensaje de error o realizar alguna acción apropiada
-                    MessageBox.Show("Por favor, seleccione una categoría válida.");
+                    MessageBox.Show("Por favor, ingrese un precio válido.");
                 }
             }
             else
             {
                 // Mostrar un mensaje de error o realizar alguna acción apropiada
-                MessageBox.Show("Por favor, ingrese un precio válido.");
+                MessageBox.Show("Por favor, ingrese un stock válido.");
             }
 
         }
@@ -186,6 +206,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
             VistaArticulos.Columns["precio"].HeaderText = "Precio";
             VistaArticulos.Columns["categoria"].HeaderText = "Categoria";
             VistaArticulos.Columns["marca"].HeaderText = "Marca";
+            VistaArticulos.Columns["stock"].HeaderText = "Stock";
         }
 
         private void CargarCategorias()
@@ -260,6 +281,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
                 string precioString = selectedRow.Cells["precio"].Value.ToString();
                 string categoria = selectedRow.Cells["categoria"].Value.ToString();
                 string marca = selectedRow.Cells["Marca"].Value.ToString();
+                string stock = selectedRow.Cells["stock"].Value.ToString();
 
                 // Convertir el valor del precio a decimal
                 decimal precio;
@@ -268,6 +290,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
                     // Asignar los valores a los campos del formulario
                     txtnombre.Text = nombre;
                     txtPrecio.Text = precio.ToString();
+                    txtStock.Text = stock.ToString();
                     CBCategoria.SelectedValue = categoria;
                     CBMarca.SelectedValue = marca;
                 }

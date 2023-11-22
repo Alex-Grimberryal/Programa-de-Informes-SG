@@ -77,10 +77,9 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 ArtVend.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
 
                 // Llamar al método de inserción de artículo de la clase Procedimientos
-                proc.ModificarArticulo(idArticulo, nombre, precio, marca, categoria);
+                proc.InsertarArticulosVendidos(articulo, cantidad);
 
-                // Actualizar los artículos en el DataGridView
-                ActualizarArticulos();
+                
             }
             else
             {

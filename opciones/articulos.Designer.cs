@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             ElArticulo = new Button();
             ModArticulo = new Button();
             InArticulo = new Button();
@@ -40,6 +40,7 @@
             CBCategoria = new ComboBox();
             CBMarca = new ComboBox();
             label2 = new Label();
+            txtStock = new TextBox();
             ((System.ComponentModel.ISupportInitialize)VistaArticulos).BeginInit();
             SuspendLayout();
             // 
@@ -92,14 +93,14 @@
             // 
             VistaArticulos.BackgroundColor = SystemColors.ActiveCaption;
             VistaArticulos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.ButtonHighlight;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
-            VistaArticulos.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.ButtonHighlight;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            VistaArticulos.DefaultCellStyle = dataGridViewCellStyle2;
             VistaArticulos.GridColor = SystemColors.GradientActiveCaption;
             VistaArticulos.Location = new Point(481, 20);
             VistaArticulos.Name = "VistaArticulos";
@@ -142,7 +143,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Bahnschrift SemiBold SemiConden", 16.2F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(26, 248);
+            label1.Location = new Point(26, 303);
             label1.Name = "label1";
             label1.Size = new Size(402, 34);
             label1.TabIndex = 12;
@@ -151,7 +152,7 @@
             // CBCategoria
             // 
             CBCategoria.FormattingEnabled = true;
-            CBCategoria.Location = new Point(28, 306);
+            CBCategoria.Location = new Point(28, 361);
             CBCategoria.Name = "CBCategoria";
             CBCategoria.Size = new Size(424, 28);
             CBCategoria.TabIndex = 13;
@@ -159,7 +160,7 @@
             // CBMarca
             // 
             CBMarca.FormattingEnabled = true;
-            CBMarca.Location = new Point(28, 417);
+            CBMarca.Location = new Point(28, 472);
             CBMarca.Name = "CBMarca";
             CBMarca.Size = new Size(424, 28);
             CBMarca.TabIndex = 15;
@@ -168,17 +169,27 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Bahnschrift SemiBold SemiConden", 16.2F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(26, 359);
+            label2.Location = new Point(26, 414);
             label2.Name = "label2";
             label2.Size = new Size(365, 34);
             label2.TabIndex = 14;
             label2.Text = "Seleccione la Marca del Articulo";
+            // 
+            // txtStock
+            // 
+            txtStock.Font = new Font("Bahnschrift SemiBold SemiConden", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
+            txtStock.Location = new Point(26, 243);
+            txtStock.Name = "txtStock";
+            txtStock.PlaceholderText = "Ingrese Stock (Solo Numeros)";
+            txtStock.Size = new Size(426, 35);
+            txtStock.TabIndex = 16;
             // 
             // articulos
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.RoyalBlue;
+            Controls.Add(txtStock);
             Controls.Add(CBMarca);
             Controls.Add(label2);
             Controls.Add(CBCategoria);
@@ -211,5 +222,6 @@
         private ComboBox CBCategoria;
         private ComboBox CBMarca;
         private Label label2;
+        private TextBox txtStock;
     }
 }
