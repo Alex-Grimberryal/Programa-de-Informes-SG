@@ -110,16 +110,9 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        
-
         private void AbrirModalArticulos_Click(object sender, EventArgs e)
         {
-            
+
             if (string.IsNullOrEmpty(txtCliente.Text) || string.IsNullOrEmpty(txtDNI.Text) || string.IsNullOrEmpty(txtTelefono.Text) || string.IsNullOrEmpty(txtEmail.Text) || string.IsNullOrEmpty(txtDireccion.Text))
             {
                 MessageBox.Show("Todos los campos deben estar completos", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -153,7 +146,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 return;
             }
 
-            
+
 
             txtMonto.Text = "0,00";
 

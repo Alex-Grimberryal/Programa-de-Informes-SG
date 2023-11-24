@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
-            DTPfechaActual = new DateTimePicker();
+            txtDNI = new TextBox();
+            label11 = new Label();
             CBtecnico = new ComboBox();
             NtAdd = new TextBox();
             txtDireccion = new TextBox();
@@ -41,11 +42,12 @@
             txtCliente = new TextBox();
             nroRegistro = new TextBox();
             label7 = new Label();
-            label5 = new Label();
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
             panel2 = new Panel();
+            DTPfechaActual = new DateTimePicker();
+            label5 = new Label();
             panel5 = new Panel();
             AbrirModalArticulos = new Button();
             txtMonto = new TextBox();
@@ -53,9 +55,6 @@
             label4 = new Label();
             panel3 = new Panel();
             panel4 = new Panel();
-            RegistrarInforme = new Button();
-            txtDNI = new TextBox();
-            label11 = new Label();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
             panel3.SuspendLayout();
@@ -87,14 +86,28 @@
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
             // 
-            // DTPfechaActual
+            // txtDNI
             // 
-            DTPfechaActual.Font = new Font("Bahnschrift SemiBold SemiConden", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            DTPfechaActual.Format = DateTimePickerFormat.Short;
-            DTPfechaActual.Location = new Point(262, 29);
-            DTPfechaActual.Name = "DTPfechaActual";
-            DTPfechaActual.Size = new Size(317, 32);
-            DTPfechaActual.TabIndex = 19;
+            txtDNI.BackColor = Color.LightCyan;
+            txtDNI.BorderStyle = BorderStyle.None;
+            txtDNI.Font = new Font("Bahnschrift SemiBold SemiConden", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            txtDNI.Location = new Point(283, 299);
+            txtDNI.Multiline = true;
+            txtDNI.Name = "txtDNI";
+            txtDNI.PlaceholderText = "Ingrese DNI";
+            txtDNI.Size = new Size(294, 36);
+            txtDNI.TabIndex = 20;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.BackColor = Color.DeepSkyBlue;
+            label11.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label11.Location = new Point(46, 299);
+            label11.Name = "label11";
+            label11.Size = new Size(185, 36);
+            label11.TabIndex = 19;
+            label11.Text = "            DNI           ";
             // 
             // CBtecnico
             // 
@@ -226,18 +239,6 @@
             label7.Text = "       Contacto       ";
             label7.Click += label7_Click;
             // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.BackColor = Color.DeepSkyBlue;
-            label5.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            label5.Location = new Point(27, 25);
-            label5.Name = "label5";
-            label5.Size = new Size(188, 36);
-            label5.TabIndex = 6;
-            label5.Text = "          Fecha         ";
-            label5.Click += label5_Click;
-            // 
             // label3
             // 
             label3.AutoSize = true;
@@ -278,6 +279,27 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(638, 776);
             panel2.TabIndex = 1;
+            // 
+            // DTPfechaActual
+            // 
+            DTPfechaActual.Font = new Font("Bahnschrift SemiBold SemiConden", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            DTPfechaActual.Format = DateTimePickerFormat.Short;
+            DTPfechaActual.Location = new Point(262, 29);
+            DTPfechaActual.Name = "DTPfechaActual";
+            DTPfechaActual.Size = new Size(317, 32);
+            DTPfechaActual.TabIndex = 19;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.BackColor = Color.DeepSkyBlue;
+            label5.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label5.Location = new Point(27, 25);
+            label5.Name = "label5";
+            label5.Size = new Size(188, 36);
+            label5.TabIndex = 6;
+            label5.Text = "          Fecha         ";
+            label5.Click += label5_Click;
             // 
             // panel5
             // 
@@ -357,47 +379,11 @@
             panel4.Size = new Size(638, 776);
             panel4.TabIndex = 1;
             // 
-            // RegistrarInforme
-            // 
-            RegistrarInforme.BackColor = Color.LightSteelBlue;
-            RegistrarInforme.Font = new Font("Bahnschrift SemiBold Condensed", 72F, FontStyle.Bold, GraphicsUnit.Point);
-            RegistrarInforme.Location = new Point(718, 481);
-            RegistrarInforme.Name = "RegistrarInforme";
-            RegistrarInforme.Size = new Size(557, 288);
-            RegistrarInforme.TabIndex = 3;
-            RegistrarInforme.Text = "REGISTRAR";
-            RegistrarInforme.UseVisualStyleBackColor = false;
-            RegistrarInforme.Click += button1_Click_1;
-            // 
-            // txtDNI
-            // 
-            txtDNI.BackColor = Color.LightCyan;
-            txtDNI.BorderStyle = BorderStyle.None;
-            txtDNI.Font = new Font("Bahnschrift SemiBold SemiConden", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            txtDNI.Location = new Point(283, 299);
-            txtDNI.Multiline = true;
-            txtDNI.Name = "txtDNI";
-            txtDNI.PlaceholderText = "Ingrese DNI";
-            txtDNI.Size = new Size(294, 36);
-            txtDNI.TabIndex = 20;
-            // 
-            // label11
-            // 
-            label11.AutoSize = true;
-            label11.BackColor = Color.DeepSkyBlue;
-            label11.Font = new Font("Bahnschrift SemiBold Condensed", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            label11.Location = new Point(46, 299);
-            label11.Name = "label11";
-            label11.Size = new Size(185, 36);
-            label11.TabIndex = 19;
-            label11.Text = "            DNI           ";
-            // 
             // UserControl1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.MidnightBlue;
-            Controls.Add(RegistrarInforme);
             Controls.Add(panel3);
             Controls.Add(panel1);
             Name = "UserControl1";
@@ -434,7 +420,6 @@
         private TextBox txtMonto;
         private TextBox txtDireccion;
         private TextBox NtAdd;
-        private Button RegistrarInforme;
         private Panel panel5;
         private Button AbrirModalArticulos;
         private ComboBox CBtecnico;
