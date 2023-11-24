@@ -16,76 +16,71 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
     {
         Procedimientos proc = new Procedimientos();
 
-        public int IdInforme { get; set; }
+        public int IdInforme;
 
         public Seleccionador_deArticulos()
         {
             InitializeComponent();
+            IdInforme = proc.ObtenerUltimoInformeId();
         }
 
         private void Seleccionador_deArticulos_Load(object sender, EventArgs e)
         {
-            // Obtener la tabla de artículos vendidos del formulario principal
-            DataTable articulosVendidosTable = new DataTable();
+            // Llamar al método ObtenerUsuarios de la clase Procedimientos
+            DataTable articulosTable = proc.ObtenerArticulosVendidosUI();
 
-            // Obtener el nombre del artículo para cada ID de artículo
-            DataTable articulosTable = proc.ObtenerArticulosVendidosPorInforme(IdInforme);
-
-            // Agregar la columna "Articulo" a la tabla de artículos vendidos
-            articulosVendidosTable.Columns.Add("Articulo", typeof(string));
-
-            // Unir las tablas para obtener el nombre del artículo correspondiente
-            foreach (DataRow row in articulosVendidosTable.Rows)
-            {
-                int idArticulo = Convert.ToInt32(row["art_idArt"]);
-                DataRow[] articuloRows = articulosTable.Select($"idarticulo = {idArticulo}");
-
-                if (articuloRows.Length > 0)
-                {
-                    string nombreArticulo = articuloRows[0]["nombre"].ToString();
-                    row["Articulo"] = nombreArticulo;
-                }
-            }
+            // Crear un BindingSource y asignar el DataTable como origen de datos
+            BindingSource bindingSource = new BindingSource();
+            bindingSource.DataSource = articulosTable;
 
             // Asignar los datos al DataGridView
-            ArtVend.DataSource = articulosVendidosTable;
+            ArtVend.DataSource = articulosTable;
+
+            // Configurar las columnas del DataGridView
+            ArtVend.Columns["info_idInforme"].HeaderText = "ID Informe";
+            ArtVend.Columns["art_idArt"].HeaderText = "ID Articulo";
+            ArtVend.Columns["nombre_articulo"].HeaderText = "Nombre";
+            ArtVend.Columns["cantidad"].HeaderText = "Cantidad";
+            ArtVend.Columns["monto_total"].HeaderText = "Monto Total";
+
+
+            // Ajustar el ancho de las columnas automáticamente
+            ArtVend.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+
 
             CargarArticulos();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string cantidad = txtCantidad.Text;
-
-            if (CBArticulo.SelectedItem != null)
+            if (int.TryParse(txtCantidad.Text, out int cantidad)) // Convertir txtCantidad a int
             {
-                int articulo = Convert.ToInt32(CBArticulo.SelectedValue);
-                txtCantidad.Text = string.Empty;
-                CBArticulo.SelectedIndex = -1;
+                if (CBArticulo.SelectedItem != null)
+                {
+                    int articulo = Convert.ToInt32(CBArticulo.SelectedValue);
+                    txtCantidad.Text = string.Empty;
+                    CBArticulo.SelectedIndex = -1;
 
-                // Configurar las columnas del DataGridView
-                ArtVend.Columns["info_idInforme"].HeaderText = "ID Informe";
-                ArtVend.Columns["art_idArt"].HeaderText = "ID Artículo";
-                ArtVend.Columns["Articulo"].HeaderText = "Artículo";
-                ArtVend.Columns["cantidad"].HeaderText = "Cantidad";
-                ArtVend.Columns["monto_total"].HeaderText = "Monto Total";
+                    // Obtener el precio del artículo seleccionado
+                    decimal precio = ObtenerPrecioArticulo(articulo);
 
-                // Ajustar el ancho de las columnas automáticamente
-                ArtVend.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+                    // Calcular el monto multiplicando el precio por la cantidad seleccionada
+                    decimal monto = precio * Convert.ToDecimal(cantidad);
 
-                // Obtener el precio del artículo seleccionado
-                decimal precio = ObtenerPrecioArticulo(articulo);
+                    // Llamar al método de inserción de artículo de la clase Procedimientos
+                    proc.InsertarArticulosVendidos(IdInforme, articulo, cantidad, monto);
 
-                // Calcular el monto multiplicando el precio por la cantidad seleccionada
-                decimal monto = precio * Convert.ToDecimal(cantidad);
-
-                // Llamar al método de inserción de artículo de la clase Procedimientos
-                proc.InsertarArticulosVendidos(IdInforme, articulo, cantidad, monto);
+                    ActualizarArticulosVendidos();
+                }
+                else
+                {
+                    // Mostrar un mensaje de error o realizar alguna acción apropiada
+                    MessageBox.Show("Por favor, seleccione un articulo válido.");
+                }
             }
             else
             {
-                // Mostrar un mensaje de error o realizar alguna acción apropiada
-                MessageBox.Show("Por favor, seleccione un articulo válido.");
+                MessageBox.Show("Por favor, ingrese una cantidad válida.");
             }
         }
         private void ModArtvend_Click(object sender, EventArgs e)
@@ -137,7 +132,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
         private decimal ObtenerPrecioArticulo(int articulo)
         {
             // Crear la consulta SQL para obtener el precio del artículo
-            string query = "SELECT precio FROM articulos WHERE nombre = @nombre";
+            string query = "SELECT precio FROM articulos WHERE idarticulo = @articulo";
 
             // Obtener la cadena de conexión de la clase Procedimientos
             string connectionString = proc.server;
@@ -146,8 +141,8 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
-                // Agregar el parámetro para el nombre del artículo
-                command.Parameters.AddWithValue("@nombre", articulo);
+                // Agregar el parámetro para el ID del artículo
+                command.Parameters.AddWithValue("@articulo", articulo);
 
                 // Abrir la conexión
                 connection.Open();
@@ -165,5 +160,21 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             // Si no se encuentra el artículo o no se obtiene el precio, retornar 0
             return 0;
         }
+        private void ActualizarArticulosVendidos()
+        {
+            // Obtener los usuarios actualizados de la base de datos
+            DataTable articulosTable = proc.ObtenerArticulosVendidosUI();
+
+            // Asignar los datos al DataGridView
+            ArtVend.DataSource = articulosTable;
+
+            // Configurar las columnas del DataGridView
+            ArtVend.Columns["info_idInforme"].HeaderText = "ID Informe";
+            ArtVend.Columns["art_idArt"].HeaderText = "ID Articulo";
+            ArtVend.Columns["nombre_articulo"].HeaderText = "Nombre";
+            ArtVend.Columns["cantidad"].HeaderText = "Cantidad";
+            ArtVend.Columns["monto_total"].HeaderText = "Monto Total";
+        }
+
     }
 }

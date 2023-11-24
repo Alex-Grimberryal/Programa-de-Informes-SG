@@ -652,21 +652,37 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             }
         }
 
-        public DataTable ObtenerArticulosVendidosPorInforme(int idInforme)
+        public DataTable ObtenerArticulosVendidosUI()
         {
-            using (SqlConnection connection = new SqlConnection(server))
+            DataTable dataTable = new DataTable();
+
+            try
             {
-                SqlCommand command = new SqlCommand("SELECT * FROM Art_Vend WHERE info_idInforme = @idInforme", connection);
-                command.Parameters.AddWithValue("@idInforme", idInforme);
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(server))
+                {
+                    connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
+                    // Obtener el último nro_de_informe de la tabla informe
+                    SqlCommand getLastInformeIdCmd = new SqlCommand("SELECT MAX(nro_de_informe) FROM informe", connection);
+                    int ultimoInformeId = Convert.ToInt32(getLastInformeIdCmd.ExecuteScalar());
 
-                DataTable dataTable = new DataTable();
-                dataTable.Load(reader);
+                    // Obtener los datos de la tabla art_vend relacionados con el último nro_de_informe y el nombre del artículo
+                    SqlCommand getArtVendDataCmd = new SqlCommand("SELECT av.art_idArt, av.info_idInforme, av.cantidad, av.monto_total, a.nombre AS nombre_articulo FROM art_vend av INNER JOIN articulos a ON av.art_idArt = a.idarticulo WHERE av.info_idInforme = @ultimoInformeId", connection);
+                    getArtVendDataCmd.Parameters.AddWithValue("@ultimoInformeId", ultimoInformeId);
 
-                return dataTable;
+                    using (SqlDataReader reader = getArtVendDataCmd.ExecuteReader())
+                    {
+                        // Cargar los datos en el DataTable
+                        dataTable.Load(reader);
+                    }
+                }
             }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            return dataTable;
         }
 
         //Procedimientos para los informes
@@ -738,20 +754,29 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             }
         }
 
-
-        private int ObtenerSiguienteNroInforme(SqlConnection connection)
+        public int ObtenerUltimoInformeId()
         {
-            int siguienteNumeroInforme = 0;
-            string query = "SELECT ISNULL(MAX(NroInforme), 0) + 1 FROM informe";
+            int ultimoInformeId = 0;
 
-            using (SqlCommand command = new SqlCommand(query, connection))
+            try
             {
-                object result = command.ExecuteScalar();
+                using (SqlConnection connection = new SqlConnection(server))
+                {
+                    connection.Open();
 
-                siguienteNumeroInforme = Convert.ToInt32(result);
+                    SqlCommand command = new SqlCommand("SELECT MAX(nro_de_informe) FROM informe", connection);
+                    object result = command.ExecuteScalar();
+
+                    if (result != DBNull.Value)
+                        ultimoInformeId = Convert.ToInt32(result);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
 
-            return siguienteNumeroInforme;
+            return ultimoInformeId;
         }
 
         public DataTable ObtenerInformesPorFecha(DateTime fechaInicio, DateTime fechaFin)
@@ -840,7 +865,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             return articulosTable;
         }
 
-        public void InsertarArticulosVendidos(int IdInforme,int articulo, string cantidad, decimal monto)
+        public void InsertarArticulosVendidos(int idInforme, int articulo, int cantidad, decimal monto)
         {
             try
             {
@@ -848,20 +873,17 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 {
                     connection.Open();
 
-                    // Crear el comando para llamar al procedimiento almacenado
-                    using (SqlCommand command = new SqlCommand("InsertarArticulosVendidos", connection))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
+                    SqlCommand command = new SqlCommand("InsertarArticulosVendidos", connection);
+                    command.CommandType = CommandType.StoredProcedure;
 
-                        // Agregar los parámetros al comando
-                        command.Parameters.AddWithValue("@IdInforme", IdInforme);
-                        command.Parameters.AddWithValue("@articulo", articulo);
-                        command.Parameters.AddWithValue("@cantidad", cantidad);
-                        command.Parameters.AddWithValue("@monto", monto);
+                    // Agregar los parámetros al comando
+                    command.Parameters.AddWithValue("@IdInforme", idInforme);
+                    command.Parameters.AddWithValue("@articulo", articulo);
+                    command.Parameters.AddWithValue("@cantidad", cantidad);
+                    command.Parameters.AddWithValue("@monto", monto);
 
-                        // Ejecutar el comando
-                        command.ExecuteNonQuery();
-                    }
+                    // Ejecutar el comando
+                    command.ExecuteNonQuery();
                 }
             }
             catch (Exception e)
