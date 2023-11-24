@@ -14,6 +14,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
     {
         public string role;
         public int idUser;
+        public string nombreUser;
 
 #pragma warning disable CS0169 // El campo 'Principal.userControl2' nunca se usa
         private UserControl2 userControl2;
@@ -21,11 +22,12 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
         private readonly EventHandler UserControl2_Load;
 
 #pragma warning disable CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declararlo como que admite un valor NULL.
-        public Principal(string role, int userId)
+        public Principal(string role, int userId, string userName)
 #pragma warning restore CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declararlo como que admite un valor NULL.
         {
             this.role = role;
             idUser = userId;
+            this.nombreUser = userName;
 
             InitializeComponent();
             // Suscribir los eventos Click de los botones
@@ -34,6 +36,11 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 #pragma warning disable CS8622 // La nulabilidad de los tipos de referencia del tipo de parámetro no coincide con el delegado de destino (posiblemente debido a los atributos de nulabilidad).
             opciones.Click += opciones_Click;
 #pragma warning restore CS8622 // La nulabilidad de los tipos de referencia del tipo de parámetro no coincide con el delegado de destino (posiblemente debido a los atributos de nulabilidad).
+            // Mostrar el mensaje de bienvenida con el nombre del usuario en formato múltiple línea
+            lblBienvenido.Text = "Bienvenido, " + userName;
+            lblBienvenido.AutoSize = true;
+            lblBienvenido.TextAlign = ContentAlignment.MiddleCenter;
+            lblBienvenido.Font = new Font(lblBienvenido.Font, FontStyle.Regular);
 
         }
 

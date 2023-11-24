@@ -60,7 +60,8 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             {
                 string role = proc.ObtenerRol(txtUser.Text); // Obtener el rol del usuario
                 int userId = proc.ObtenerIdUsuario(txtUser.Text, txtPassword.Text); // Obtener el ID del usuario
-                Principal menu = new Principal(role, userId); // Pasar el rol y el ID como parámetros
+                string userName = proc.ObtenerNombreUsuario(txtUser.Text); // Obtener el nombre del usuario
+                Principal menu = new Principal(role, userId, userName); // Pasar el rol y el ID como parámetros
                 this.Hide();
                 menu.ShowDialog();
             }

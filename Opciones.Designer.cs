@@ -123,6 +123,7 @@
             expPDF.TabIndex = 2;
             expPDF.Text = "Exportar Data";
             expPDF.UseVisualStyleBackColor = false;
+            expPDF.Click += expPDF_Click;
             // 
             // Opciones
             // 

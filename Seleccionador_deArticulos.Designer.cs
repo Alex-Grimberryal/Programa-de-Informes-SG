@@ -37,6 +37,7 @@
             InArtvend = new Button();
             ElArtvend = new Button();
             ModArtvend = new Button();
+            btnTerminarInforme = new Button();
             ((System.ComponentModel.ISupportInitialize)ArtVend).BeginInit();
             SuspendLayout();
             // 
@@ -66,7 +67,7 @@
             ArtVend.Name = "ArtVend";
             ArtVend.RowHeadersWidth = 51;
             ArtVend.RowTemplate.Height = 29;
-            ArtVend.Size = new Size(808, 730);
+            ArtVend.Size = new Size(808, 506);
             ArtVend.TabIndex = 2;
             ArtVend.CellContentClick += ArtVend_CellContentClick;
             // 
@@ -142,12 +143,27 @@
             ModArtvend.UseVisualStyleBackColor = false;
             ModArtvend.Click += ModArtvend_Click;
             // 
+            // btnTerminarInforme
+            // 
+            btnTerminarInforme.BackColor = Color.PaleGreen;
+            btnTerminarInforme.FlatAppearance.BorderSize = 0;
+            btnTerminarInforme.FlatStyle = FlatStyle.Flat;
+            btnTerminarInforme.Font = new Font("Bahnschrift SemiBold SemiConden", 13F, FontStyle.Bold, GraphicsUnit.Point);
+            btnTerminarInforme.Location = new Point(39, 828);
+            btnTerminarInforme.Name = "btnTerminarInforme";
+            btnTerminarInforme.Size = new Size(808, 57);
+            btnTerminarInforme.TabIndex = 9;
+            btnTerminarInforme.Text = "COMPLETAR INFORME";
+            btnTerminarInforme.UseVisualStyleBackColor = false;
+            btnTerminarInforme.Click += btnTerminarInforme_Click;
+            // 
             // Seleccionador_deArticulos
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.MenuHighlight;
-            ClientSize = new Size(882, 1055);
+            ClientSize = new Size(882, 913);
+            Controls.Add(btnTerminarInforme);
             Controls.Add(ModArtvend);
             Controls.Add(ElArtvend);
             Controls.Add(InArtvend);
@@ -177,5 +193,6 @@
         private Button InArtvend;
         private Button ElArtvend;
         private Button ModArtvend;
+        private Button btnTerminarInforme;
     }
 }

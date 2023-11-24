@@ -65,5 +65,10 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             panel1.Controls.Add(usuarios);
             panel1.Refresh();
         }
+
+        private void expPDF_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Opcion en Desarrollo, contactese con el programador");
+        }
     }
 }

@@ -30,31 +30,37 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Principal));
             panel1 = new Panel();
+            lblBienvenido = new Label();
             label1 = new Label();
             panel2 = new Panel();
+            opciones = new Button();
             pictureBox2 = new PictureBox();
-            panel3 = new Panel();
-            pictureBox1 = new PictureBox();
-            txtBuscador = new TextBox();
             btnNuevoInforme = new Button();
             btnVerInformes = new Button();
             actividad = new Panel();
-            opciones = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BackColor = Color.LightSteelBlue;
+            panel1.Controls.Add(lblBienvenido);
             panel1.Controls.Add(label1);
             panel1.Location = new Point(1, -3);
             panel1.Name = "panel1";
             panel1.Size = new Size(1920, 160);
             panel1.TabIndex = 0;
+            // 
+            // lblBienvenido
+            // 
+            lblBienvenido.AutoSize = true;
+            lblBienvenido.Font = new Font("Bahnschrift Condensed", 20.2F, FontStyle.Bold, GraphicsUnit.Point);
+            lblBienvenido.Location = new Point(1425, 58);
+            lblBienvenido.Name = "lblBienvenido";
+            lblBienvenido.Size = new Size(0, 41);
+            lblBienvenido.TabIndex = 1;
             // 
             // label1
             // 
@@ -72,8 +78,6 @@
             panel2.BackColor = Color.RoyalBlue;
             panel2.Controls.Add(opciones);
             panel2.Controls.Add(pictureBox2);
-            panel2.Controls.Add(panel3);
-            panel2.Controls.Add(txtBuscador);
             panel2.Controls.Add(btnNuevoInforme);
             panel2.Controls.Add(btnVerInformes);
             panel2.Location = new Point(1, 157);
@@ -82,10 +86,24 @@
             panel2.TabIndex = 1;
             panel2.Paint += panel2_Paint;
             // 
+            // opciones
+            // 
+            opciones.BackColor = Color.SkyBlue;
+            opciones.FlatAppearance.BorderSize = 0;
+            opciones.FlatStyle = FlatStyle.Flat;
+            opciones.Font = new Font("Bahnschrift Condensed", 28.2F, FontStyle.Bold, GraphicsUnit.Point);
+            opciones.Location = new Point(-13, 479);
+            opciones.Name = "opciones";
+            opciones.Size = new Size(551, 202);
+            opciones.TabIndex = 5;
+            opciones.Text = "Opciones";
+            opciones.UseVisualStyleBackColor = false;
+            opciones.Click += opciones_Click;
+            // 
             // pictureBox2
             // 
             pictureBox2.BackgroundImage = (Image)resources.GetObject("pictureBox2.BackgroundImage");
-            pictureBox2.Location = new Point(68, 689);
+            pictureBox2.Location = new Point(68, 728);
             pictureBox2.Margin = new Padding(3, 4, 3, 4);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(383, 110);
@@ -94,47 +112,15 @@
             pictureBox2.TabStop = false;
             pictureBox2.Click += pictureBox2_Click;
             // 
-            // panel3
-            // 
-            panel3.BackColor = Color.White;
-            panel3.Controls.Add(pictureBox1);
-            panel3.Location = new Point(417, 36);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(82, 83);
-            panel3.TabIndex = 3;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.BackgroundImage = (Image)resources.GetObject("pictureBox1.BackgroundImage");
-            pictureBox1.Location = new Point(18, 8);
-            pictureBox1.Margin = new Padding(3, 4, 3, 4);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(56, 56);
-            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
-            // 
-            // txtBuscador
-            // 
-            txtBuscador.BorderStyle = BorderStyle.None;
-            txtBuscador.Font = new Font("Bahnschrift Condensed", 36F, FontStyle.Bold, GraphicsUnit.Point);
-            txtBuscador.Location = new Point(21, 36);
-            txtBuscador.Multiline = true;
-            txtBuscador.Name = "txtBuscador";
-            txtBuscador.PlaceholderText = "Buscar Elemento";
-            txtBuscador.Size = new Size(400, 83);
-            txtBuscador.TabIndex = 2;
-            txtBuscador.TextChanged += textBox1_TextChanged;
-            // 
             // btnNuevoInforme
             // 
             btnNuevoInforme.BackColor = Color.SkyBlue;
             btnNuevoInforme.FlatAppearance.BorderSize = 0;
             btnNuevoInforme.FlatStyle = FlatStyle.Flat;
             btnNuevoInforme.Font = new Font("Bahnschrift Condensed", 28.2F, FontStyle.Bold, GraphicsUnit.Point);
-            btnNuevoInforme.Location = new Point(-13, 322);
+            btnNuevoInforme.Location = new Point(-13, 249);
             btnNuevoInforme.Name = "btnNuevoInforme";
-            btnNuevoInforme.Size = new Size(551, 134);
+            btnNuevoInforme.Size = new Size(551, 202);
             btnNuevoInforme.TabIndex = 1;
             btnNuevoInforme.Text = "Crear Nuevo Informe";
             btnNuevoInforme.UseVisualStyleBackColor = false;
@@ -147,9 +133,9 @@
             btnVerInformes.FlatAppearance.BorderSize = 0;
             btnVerInformes.FlatStyle = FlatStyle.Flat;
             btnVerInformes.Font = new Font("Bahnschrift Condensed", 28.2F, FontStyle.Bold, GraphicsUnit.Point);
-            btnVerInformes.Location = new Point(-13, 162);
+            btnVerInformes.Location = new Point(-13, 22);
             btnVerInformes.Name = "btnVerInformes";
-            btnVerInformes.Size = new Size(551, 137);
+            btnVerInformes.Size = new Size(551, 202);
             btnVerInformes.TabIndex = 0;
             btnVerInformes.Text = "Ver Resumen de Actividades";
             btnVerInformes.UseVisualStyleBackColor = false;
@@ -162,20 +148,6 @@
             actividad.Size = new Size(1319, 825);
             actividad.TabIndex = 2;
             actividad.Paint += actividad_Paint;
-            // 
-            // opciones
-            // 
-            opciones.BackColor = Color.SkyBlue;
-            opciones.FlatAppearance.BorderSize = 0;
-            opciones.FlatStyle = FlatStyle.Flat;
-            opciones.Font = new Font("Bahnschrift Condensed", 28.2F, FontStyle.Bold, GraphicsUnit.Point);
-            opciones.Location = new Point(-13, 481);
-            opciones.Name = "opciones";
-            opciones.Size = new Size(551, 134);
-            opciones.TabIndex = 5;
-            opciones.Text = "Opciones";
-            opciones.UseVisualStyleBackColor = false;
-            opciones.Click += opciones_Click;
             // 
             // Principal
             // 
@@ -197,9 +169,6 @@
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            panel3.ResumeLayout(false);
-            panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
@@ -216,10 +185,8 @@
         private Button btnVerInformes;
         private Panel actividad;
         private Label label1;
-        private Panel panel3;
-        private TextBox txtBuscador;
-        private PictureBox pictureBox1;
         private PictureBox pictureBox2;
         private Button opciones;
+        private Label lblBienvenido;
     }
 }

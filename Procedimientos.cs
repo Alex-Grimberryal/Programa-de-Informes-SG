@@ -69,6 +69,34 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             return string.Empty;
         }
 
+        public string ObtenerNombreUsuario(string txtUser)
+        {
+            try
+            {
+                Conexion.Open();
+
+                SqlCommand cmd = new SqlCommand("SELECT nombre FROM usuarios WHERE nombre = @txtUser", Conexion);
+                cmd.Parameters.AddWithValue("@txtUser", txtUser);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    return dr.GetString(0);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                Conexion.Close();
+            }
+
+            return string.Empty;
+        }
+
         public int ObtenerIdUsuario(string txtUser, string txtPassword)
         {
             try
@@ -889,6 +917,56 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+            }
+        }
+
+        public void ModificarArticulosVendidos(int IdInforme, int articulo, int cantidad, decimal monto)
+        {
+            string connectionString = server;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("ModificarArticulosVendidos", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@IdInforme", IdInforme);
+                command.Parameters.AddWithValue("@articulo", articulo);
+                command.Parameters.AddWithValue("@cantidad", cantidad);
+                command.Parameters.AddWithValue("@monto", monto);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void EliminarArticuloVendido(int IdInforme, int articulo)
+        {
+            string connectionString = server;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("EliminarArticuloVendido", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@IdInforme", IdInforme);
+                command.Parameters.AddWithValue("@articulo", articulo);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void ActualizarArticulosYMontoTotal()
+        {
+            string connectionString = server;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("ActualizarArticulosYMontoTotal", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                connection.Open();
+                command.ExecuteNonQuery();
             }
         }
     }
