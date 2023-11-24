@@ -41,6 +41,62 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             return -1;
         }
 
+        public string ObtenerRol(string userName)
+        {
+            try
+            {
+                Conexion.Open();
+
+                SqlCommand cmd = new SqlCommand("SELECT roles.rol FROM usuarios INNER JOIN roles ON usuarios.roles_idrol = roles.idrol WHERE usuarios.nombre = @userName", Conexion);
+                cmd.Parameters.AddWithValue("@userName", userName);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    return dr.GetString(0);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                Conexion.Close();
+            }
+
+            return string.Empty;
+        }
+
+        public int ObtenerIdUsuario(string txtUser, string txtPassword)
+        {
+            try
+            {
+                Conexion.Open();
+
+                SqlCommand cmd = new SqlCommand("SELECT iduser FROM usuarios WHERE nombre = @txtUser AND contrasena = @txtPassword", Conexion);
+                cmd.Parameters.AddWithValue("@txtUser", txtUser);
+                cmd.Parameters.AddWithValue("@txtPassword", txtPassword);
+
+                object result = cmd.ExecuteScalar();
+
+                if (result != null)
+                {
+                    return Convert.ToInt32(result);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                Conexion.Close();
+            }
+
+            return 0; // Si no se encuentra el usuario o la contraseña no coincide, puedes devolver un valor predeterminado o lanzar una excepción según tu lógica de aplicación.
+        }
         //Procedimientos para los usuarios
 
         public void InsertarUsuario(string nombre, string contrasena, string rol)
@@ -596,22 +652,6 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             }
         }
 
-        public DataTable ObtenerArticulosVendidos(int idInforme)
-        {
-            using (SqlConnection connection = new SqlConnection(server))
-            {
-                SqlCommand command = new SqlCommand("SELECT * FROM Art_Vend", connection);
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                DataTable dataTable = new DataTable();
-                dataTable.Load(reader);
-
-                return dataTable;
-            }
-        }
-
         public DataTable ObtenerArticulosVendidosPorInforme(int idInforme)
         {
             using (SqlConnection connection = new SqlConnection(server))
@@ -652,6 +692,67 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             }
         }
 
+        public void InsertarInformeAMedias(string nombreCliente, string apellidoPaterno, string apellidoMaterno, string dni, string telefono, string email, decimal montoTotal, string direccionInstalacion, string notasAdicionales, int redactor, int articulosVend, int tecnico)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(server))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand("InsertarInforme", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@NombreCliente", nombreCliente);
+                    command.Parameters.AddWithValue("@ApellidoPaterno", apellidoPaterno);
+                    command.Parameters.AddWithValue("@ApellidoMaterno", apellidoMaterno);
+                    command.Parameters.AddWithValue("@DNI", dni);
+                    command.Parameters.AddWithValue("@Telefono", telefono);
+                    command.Parameters.AddWithValue("@Email", email);
+                    command.Parameters.AddWithValue("@MontoTotal", 0.00m); // Valor inicial de monto_total
+                    command.Parameters.AddWithValue("@DireccionInstalacion", direccionInstalacion);
+                    command.Parameters.AddWithValue("@NotasAdicionales", notasAdicionales);
+                    command.Parameters.AddWithValue("@Redactor", redactor);
+                    command.Parameters.AddWithValue("@ArticulosVend", 0); // Valor inicial de articulos_vend
+                    command.Parameters.AddWithValue("@Tecnico", tecnico);
+
+                    SqlParameter returnParameter = command.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+
+                    command.ExecuteNonQuery();
+
+                    int returnValue = Convert.ToInt32(returnParameter.Value);
+
+                    if (returnValue == 0)
+                    {
+                        MessageBox.Show("Informe insertado correctamente.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ocurrió un error al insertar el informe.");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+
+        private int ObtenerSiguienteNroInforme(SqlConnection connection)
+        {
+            int siguienteNumeroInforme = 0;
+            string query = "SELECT ISNULL(MAX(NroInforme), 0) + 1 FROM informe";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                object result = command.ExecuteScalar();
+
+                siguienteNumeroInforme = Convert.ToInt32(result);
+            }
+
+            return siguienteNumeroInforme;
+        }
 
         public DataTable ObtenerInformesPorFecha(DateTime fechaInicio, DateTime fechaFin)
         {
@@ -739,7 +840,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             return articulosTable;
         }
 
-        public void InsertarArticulosVendidos(string articulo, string cantidad)
+        public void InsertarArticulosVendidos(int IdInforme,int articulo, string cantidad, decimal monto)
         {
             try
             {
@@ -747,15 +848,20 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 {
                     connection.Open();
 
-                    // Insertar el técnico si el DNI no se repite
-                    SqlCommand insertCommand = new SqlCommand("InsertarTecnico", connection);
-                    insertCommand.CommandType = CommandType.StoredProcedure;
-                    insertCommand.Parameters.AddWithValue("@DNI", articulo);
-                    insertCommand.Parameters.AddWithValue("@Telefono", cantidad);
+                    // Crear el comando para llamar al procedimiento almacenado
+                    using (SqlCommand command = new SqlCommand("InsertarArticulosVendidos", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
 
-                    insertCommand.ExecuteNonQuery();
+                        // Agregar los parámetros al comando
+                        command.Parameters.AddWithValue("@IdInforme", IdInforme);
+                        command.Parameters.AddWithValue("@articulo", articulo);
+                        command.Parameters.AddWithValue("@cantidad", cantidad);
+                        command.Parameters.AddWithValue("@monto", monto);
 
-                    MessageBox.Show("Técnico insertado correctamente.");
+                        // Ejecutar el comando
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
             catch (Exception e)

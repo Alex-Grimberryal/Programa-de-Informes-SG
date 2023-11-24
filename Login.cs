@@ -5,6 +5,7 @@ using System.Data.SqlTypes;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 
+
 namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 {
     public partial class Login : Form
@@ -16,6 +17,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
         {
             InitializeComponent();
             Principal = new Principal();
+            this.txtPassword.UseSystemPasswordChar = true;
         }
         private void txtUser_TextChanged(object sender, EventArgs e)
         {
@@ -24,7 +26,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
         private void txtPassword_TextChanged(object sender, EventArgs e)
         {
-
+            
         }
 
         private void txtUser_KeyPress(object sender, KeyPressEventArgs e)
@@ -56,7 +58,9 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
             if (result == 1)
             {
-                Principal menu = new Principal();
+                string role = proc.ObtenerRol(txtUser.Text); // Obtener el rol del usuario
+                int userId = proc.ObtenerIdUsuario(txtUser.Text, txtPassword.Text); // Obtener el ID del usuario
+                Principal menu = new Principal(role, userId); // Pasar el rol y el ID como parámetros
                 this.Hide();
                 menu.ShowDialog();
             }
@@ -65,6 +69,8 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 MessageBox.Show("Usuario o contraseña incorrectos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
 
         private void Login_Load(object sender, EventArgs e)
         {

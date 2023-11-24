@@ -12,15 +12,21 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 {
     public partial class Principal : Form
     {
+        public string role;
+        public int idUser;
+
 #pragma warning disable CS0169 // El campo 'Principal.userControl2' nunca se usa
         private UserControl2 userControl2;
 #pragma warning restore CS0169 // El campo 'Principal.userControl2' nunca se usa
         private readonly EventHandler UserControl2_Load;
 
 #pragma warning disable CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declararlo como que admite un valor NULL.
-        public Principal()
+        public Principal(string role, int userId)
 #pragma warning restore CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declararlo como que admite un valor NULL.
         {
+            this.role = role;
+            idUser = userId;
+
             InitializeComponent();
             // Suscribir los eventos Click de los botones
             btnVerInformes.Click += BtnVerInformes_Click;
@@ -29,6 +35,10 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             opciones.Click += opciones_Click;
 #pragma warning restore CS8622 // La nulabilidad de los tipos de referencia del tipo de parámetro no coincide con el delegado de destino (posiblemente debido a los atributos de nulabilidad).
 
+        }
+
+        public Principal()
+        {
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -74,7 +84,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             // Lógica para actualizar el panel al crear nuevos informes
             actividad.Controls.Clear(); // Limpia cualquier control existente en el panel
 
-            UserControl1 nuevoInforme = new UserControl1();
+            UserControl1 nuevoInforme = new UserControl1(idUser);
             nuevoInforme.Dock = DockStyle.Fill; // Ajusta el relleno del UserControl al tamaño del panel
 
             actividad.Controls.Add(nuevoInforme); // Agrega el UserControl al panel
@@ -110,13 +120,27 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
         private void opciones_Click(object sender, EventArgs e)
         {
-            actividad.Controls.Clear(); // Limpia cualquier control existente en el panel
+            try
+            {
+                actividad.Controls.Clear(); // Limpia cualquier control existente en el panel
 
-            Opciones opciones = new Opciones(); 
-            opciones.Dock = DockStyle.Fill; // Ajusta el relleno del User
+                if (role == "Administrador")
+                {
+                    Opciones opciones = new Opciones();
+                    opciones.Dock = DockStyle.Fill; // Ajusta el relleno del User
 
-            actividad.Controls.Add(opciones); // Agrega el UserControl al panel
-            actividad.Refresh(); // Actualiza el panel si es necesario
+                    actividad.Controls.Add(opciones); // Agrega el UserControl al panel
+                    actividad.Refresh(); // Actualiza el panel si es necesario
+                }
+                else
+                {
+                    MessageBox.Show("No tienes permisos de Administrador para realizar esta acción", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Se produjo un error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

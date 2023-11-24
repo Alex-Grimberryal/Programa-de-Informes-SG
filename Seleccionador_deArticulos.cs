@@ -18,8 +18,6 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
         public int IdInforme { get; set; }
 
-        public DataTable ArticulosVendidosTable { get; set; }
-
         public Seleccionador_deArticulos()
         {
             InitializeComponent();
@@ -28,10 +26,10 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
         private void Seleccionador_deArticulos_Load(object sender, EventArgs e)
         {
             // Obtener la tabla de artículos vendidos del formulario principal
-            DataTable articulosVendidosTable = ArticulosVendidosTable;
+            DataTable articulosVendidosTable = new DataTable();
 
             // Obtener el nombre del artículo para cada ID de artículo
-            DataTable articulosTable = proc.ObtenerTablaArticulos();
+            DataTable articulosTable = proc.ObtenerArticulosVendidosPorInforme(IdInforme);
 
             // Agregar la columna "Articulo" a la tabla de artículos vendidos
             articulosVendidosTable.Columns.Add("Articulo", typeof(string));
@@ -61,25 +59,28 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
             if (CBArticulo.SelectedItem != null)
             {
-                string articulo = CBArticulo.SelectedValue.ToString();
-
+                int articulo = Convert.ToInt32(CBArticulo.SelectedValue);
                 txtCantidad.Text = string.Empty;
                 CBArticulo.SelectedIndex = -1;
 
                 // Configurar las columnas del DataGridView
+                ArtVend.Columns["info_idInforme"].HeaderText = "ID Informe";
                 ArtVend.Columns["art_idArt"].HeaderText = "ID Artículo";
                 ArtVend.Columns["Articulo"].HeaderText = "Artículo";
-                ArtVend.Columns["info_idInforme"].HeaderText = "ID Informe";
                 ArtVend.Columns["cantidad"].HeaderText = "Cantidad";
                 ArtVend.Columns["monto_total"].HeaderText = "Monto Total";
 
                 // Ajustar el ancho de las columnas automáticamente
                 ArtVend.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
 
-                // Llamar al método de inserción de artículo de la clase Procedimientos
-                proc.InsertarArticulosVendidos(articulo, cantidad);
+                // Obtener el precio del artículo seleccionado
+                decimal precio = ObtenerPrecioArticulo(articulo);
 
-                
+                // Calcular el monto multiplicando el precio por la cantidad seleccionada
+                decimal monto = precio * Convert.ToDecimal(cantidad);
+
+                // Llamar al método de inserción de artículo de la clase Procedimientos
+                proc.InsertarArticulosVendidos(IdInforme, articulo, cantidad, monto);
             }
             else
             {
@@ -87,7 +88,6 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 MessageBox.Show("Por favor, seleccione un articulo válido.");
             }
         }
-
         private void ModArtvend_Click(object sender, EventArgs e)
         {
 
@@ -106,7 +106,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
         private void CargarArticulos()
         {
             // Crear la consulta SQL
-            string query = "SELECT nombre FROM articulos";
+            string query = "SELECT idarticulo, nombre, precio, stock FROM articulos";
 
             // Obtener la cadena de conexión de la clase Procedimientos
             string connectionString = proc.server;
@@ -129,9 +129,41 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
                 // Asignar el DataTable al ComboBox
                 CBArticulo.DataSource = dataTable;
-                CBArticulo.DisplayMember = "articulo";
-                CBArticulo.ValueMember = "articulo";
+                CBArticulo.DisplayMember = "nombre";
+                CBArticulo.ValueMember = "idarticulo";
             }
+        }
+
+        private decimal ObtenerPrecioArticulo(int articulo)
+        {
+            // Crear la consulta SQL para obtener el precio del artículo
+            string query = "SELECT precio FROM articulos WHERE nombre = @nombre";
+
+            // Obtener la cadena de conexión de la clase Procedimientos
+            string connectionString = proc.server;
+
+            // Crear la conexión y el comando
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                // Agregar el parámetro para el nombre del artículo
+                command.Parameters.AddWithValue("@nombre", articulo);
+
+                // Abrir la conexión
+                connection.Open();
+
+                // Ejecutar la consulta y obtener el resultado (precio)
+                object result = command.ExecuteScalar();
+
+                // Verificar si se obtuvo un resultado válido
+                if (result != null && result != DBNull.Value)
+                {
+                    return Convert.ToDecimal(result);
+                }
+            }
+
+            // Si no se encuentra el artículo o no se obtiene el precio, retornar 0
+            return 0;
         }
     }
 }
