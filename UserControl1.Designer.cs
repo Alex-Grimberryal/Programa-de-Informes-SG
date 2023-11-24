@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControl1));
             panel1 = new Panel();
             txtDNI = new TextBox();
             label11 = new Label();
@@ -55,9 +56,13 @@
             label4 = new Label();
             panel3 = new Panel();
             panel4 = new Panel();
+            panel6 = new Panel();
+            label12 = new Label();
+            label13 = new Label();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
             panel3.SuspendLayout();
+            panel6.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -379,11 +384,43 @@
             panel4.Size = new Size(638, 776);
             panel4.TabIndex = 1;
             // 
+            // panel6
+            // 
+            panel6.BackColor = Color.SlateBlue;
+            panel6.Controls.Add(label13);
+            panel6.Controls.Add(label12);
+            panel6.Location = new Point(679, 457);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(616, 344);
+            panel6.TabIndex = 3;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Font = new Font("Bahnschrift SemiBold SemiConden", 25F, FontStyle.Bold, GraphicsUnit.Point);
+            label12.Location = new Point(77, 0);
+            label12.Name = "label12";
+            label12.Size = new Size(484, 102);
+            label12.TabIndex = 0;
+            label12.Text = "Instrucciones para Ingresar \r\nUn nuevo Informe";
+            label12.TextAlign = ContentAlignment.TopCenter;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Font = new Font("Bahnschrift SemiBold SemiConden", 13F, FontStyle.Bold, GraphicsUnit.Point);
+            label13.Location = new Point(59, 123);
+            label13.Name = "label13";
+            label13.Size = new Size(502, 189);
+            label13.TabIndex = 1;
+            label13.Text = resources.GetString("label13.Text");
+            // 
             // UserControl1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.MidnightBlue;
+            Controls.Add(panel6);
             Controls.Add(panel3);
             Controls.Add(panel1);
             Name = "UserControl1";
@@ -394,6 +431,8 @@
             panel5.ResumeLayout(false);
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
+            panel6.ResumeLayout(false);
+            panel6.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -426,5 +465,8 @@
         private DateTimePicker DTPfechaActual;
         private TextBox txtDNI;
         private Label label11;
+        private Panel panel6;
+        private Label label13;
+        private Label label12;
     }
 }

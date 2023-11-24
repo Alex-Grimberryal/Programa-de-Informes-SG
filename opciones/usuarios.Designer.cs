@@ -61,6 +61,7 @@
             VistaUser.Size = new Size(536, 655);
             VistaUser.TabIndex = 0;
             VistaUser.CellContentClick += VistaUser_CellContentClick;
+            VistaUser.CellFormatting += VistaUser_CellFormatting_1;
             VistaUser.SelectionChanged += VistaUser_SelectionChanged;
             // 
             // InUsusario

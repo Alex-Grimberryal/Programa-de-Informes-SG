@@ -117,4 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label13.Text" xml:space="preserve">
+    <value>- Rellene TODOS los campos antes de ingresar Articulos 
+   Solicitados
+- En la ventana que aparecera el boton de "Ingresar 
+   Articulos" registre su pedido
+- Oprima el boton Verde que se encuentra en la parte baja
+
+Y listo!!!</value>
+  </data>
 </root>

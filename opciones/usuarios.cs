@@ -27,6 +27,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
         }
         private void usuarios_Load(object sender, EventArgs e)
         {
+            VistaUser.CellFormatting += VistaUser_CellFormatting_1;
             // Llamar al método ObtenerUsuarios de la clase Procedimientos
             DataTable usuariosTable = proc.ObtenerUsuarios();
 
@@ -218,6 +219,19 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
                 comboBox1.SelectedValue = rol;
             }
         }
+
         
+        private void VistaUser_CellFormatting_1(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            // Verificar si la columna actual es la columna de contraseñas
+            if (VistaUser.Columns[e.ColumnIndex].Name == "contrasena")
+            {
+                // Reemplazar el valor de la celda con asteriscos (*)
+                if (e.Value != null)
+                {
+                    e.Value = new string('*', e.Value.ToString().Length);
+                }
+            }
+        }
     }
 }
