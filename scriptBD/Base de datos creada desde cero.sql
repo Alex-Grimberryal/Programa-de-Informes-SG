@@ -21,6 +21,18 @@ CREATE TABLE articulos (
     FOREIGN KEY (categoria_idcategoria) REFERENCES categoria (idcategoria)
 );
 
+ALTER TABLE articulos
+ADD stock INT NULL;
+
+UPDATE articulos
+SET stock = 0;
+
+ALTER TABLE articulos
+ALTER COLUMN stock INT NOT NULL;
+
+SELECT * FROM articulos
+
+
 CREATE TABLE roles (
     idrol INT IDENTITY(1,1) PRIMARY KEY,
     rol   VARCHAR(18)
@@ -63,12 +75,39 @@ CREATE TABLE informe (
 	FOREIGN KEY (redactor) REFERENCES usuarios (idUser)
 );
 
-CREATE TABLE art_vend (
-    art_idArt      INT NOT NULL,
-    info_idInforme INT NOT NULL,
-	FOREIGN KEY (art_idArt) REFERENCES articulos (idarticulo),
-	FOREIGN KEY (info_idInforme) REFERENCES informe (nro_de_informe)
-);
+
+ALTER TABLE informe
+ADD CONSTRAINT hackArtvend DEFAULT 0 FOR monto_total;
+
+
+ALTER TABLE informe
+ADD CONSTRAINT hackArtvend2 DEFAULT 0 FOR articulos_vend;
+
+UPDATE informe
+SET monto_total = av.total_monto
+FROM informe
+JOIN (
+    SELECT info_idInforme, SUM(monto_total) AS total_monto
+    FROM art_vend
+    GROUP BY info_idInforme
+) AS av ON informe.nro_de_informe = av.info_idInforme
+
+SELECT * FROM informe
+
+	CREATE TABLE art_vend (
+		art_idArt      INT NOT NULL,
+		info_idInforme INT NOT NULL,
+		FOREIGN KEY (art_idArt) REFERENCES articulos (idarticulo),
+		FOREIGN KEY (info_idInforme) REFERENCES informe (nro_de_informe)
+	);
+
+	ALTER TABLE art_vend
+	ADD cantidad INT NOT NULL,
+		monto_total DECIMAL(10, 2) NOT NULL;
+
+	ALTER TABLE art_vend
+	ADD CONSTRAINT DF_art_vend_monto_total DEFAULT 0 FOR monto_total;
+
 
 INSERT INTO categoria (categoria) VALUES
 ('Radios'),
@@ -107,6 +146,10 @@ INSERT INTO articulos (nombre, precio, marca_idmarca, categoria_idcategoria) VAL
 ('Vehículo de patrulla', 249.99, 14, 4),
 ('Cámara submarina', 179.99, 5, 3);
 
+UPDATE articulos
+SET stock = FLOOR(RAND() * (150 - 40 + 1) + 40)
+WHERE stock = 0;
+
 INSERT INTO roles (rol) VALUES
 ('Administrador'),
 ('Operario');
@@ -136,25 +179,25 @@ VALUES
 
 SELECT * FROM art_vend
 
-INSERT INTO art_vend (art_idArt, info_idInforme)
+INSERT INTO art_vend (art_idArt, info_idInforme, cantidad)
 VALUES
-(5, 1),
-(8, 1),
-(2, 2),
-(4, 2),
-(2, 3),
-(1, 3),
-(4, 4),
-(7, 4),
-(9, 5),
-(3, 5),
-(7, 6),
-(4, 6),
-(3, 7),
-(5, 7),
-(9, 8),
-(6, 8),
-(10, 9),
-(1, 9),
-(6, 10),
-(2, 10);
+(5, 1, 4),
+(8, 1, 5),
+(2, 2, 10),
+(4, 2, 7),
+(2, 3, 12),
+(1, 3, 20),
+(4, 4, 45),
+(7, 4, 14),
+(9, 5, 4),
+(3, 5, 2),
+(7, 6, 9),
+(4, 6, 1),
+(3, 7, 8),
+(5, 7, 38),
+(9, 8, 19),
+(6, 8, 20),
+(10, 9, 60),
+(1, 9, 5),
+(6, 10, 2),
+(2, 10, 12);

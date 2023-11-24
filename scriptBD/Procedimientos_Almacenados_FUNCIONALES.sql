@@ -345,6 +345,47 @@ EXEC InsertarArticulo @Nombre = 'tv tactico', @Precio = 99.99, @Marca = 'Sony', 
 
 SELECT * FROM articulos
 
+--modificacion para añadir el stock--
+
+ALTER PROCEDURE InsertarArticulo
+    @Nombre VARCHAR(80),
+    @Precio DECIMAL(10, 2),
+    @Marca VARCHAR(30),
+    @Categoria VARCHAR(30),
+    @Stock INT
+AS
+BEGIN
+    -- Verificar si la marca existe en la tabla marca
+    IF EXISTS (SELECT 1 FROM marca WHERE marca = @Marca)
+    BEGIN
+        -- Obtener el ID de la marca existente
+        DECLARE @IdMarca INT
+        SELECT @IdMarca = idmarca FROM marca WHERE marca = @Marca
+        
+        -- Verificar si la categoría existe en la tabla categoria
+        IF EXISTS (SELECT 1 FROM categoria WHERE categoria = @Categoria)
+        BEGIN
+            -- Obtener el ID de la categoría existente
+            DECLARE @IdCategoria INT
+            SELECT @IdCategoria = idcategoria FROM categoria WHERE categoria = @Categoria
+            
+            -- Insertar el nuevo artículo con las claves foráneas correspondientes
+            INSERT INTO articulos (nombre, precio, marca_idmarca, categoria_idcategoria, stock)
+            VALUES (@Nombre, @Precio, @IdMarca, @IdCategoria, @Stock)
+            
+            SELECT 'Artículo insertado correctamente.'
+        END
+        ELSE
+        BEGIN
+            SELECT 'La categoría especificada no existe en la tabla categoria.'
+        END
+    END
+    ELSE
+    BEGIN
+        SELECT 'La marca especificada no existe en la tabla marca.'
+    END
+END
+
 ------------------------------------------------------
 CREATE PROCEDURE ModificarArticulo
     @IdArticulo INT,
@@ -396,6 +437,57 @@ END
 
 EXEC ModificarArticulo @IdArticulo = 11, @Nombre = 'TV monitor', @Precio = 199.99, @Marca = 'Samsung', @Categoria = 'Sonares';
 
+--modificacion para añadir el stock--
+
+ALTER PROCEDURE ModificarArticulo
+    @IdArticulo INT,
+    @Nombre VARCHAR(80),
+    @Precio DECIMAL(10, 2),
+    @Marca VARCHAR(30),
+    @Categoria VARCHAR(30),
+    @Stock INT
+AS
+BEGIN
+    -- Verificar si el artículo existe en la tabla articulos
+    IF EXISTS (SELECT 1 FROM articulos WHERE idarticulo = @IdArticulo)
+    BEGIN
+        -- Verificar si la marca existe en la tabla marca
+        IF EXISTS (SELECT 1 FROM marca WHERE marca = @Marca)
+        BEGIN
+            -- Obtener el ID de la marca existente
+            DECLARE @IdMarca INT
+            SELECT @IdMarca = idmarca FROM marca WHERE marca = @Marca
+            
+            -- Verificar si la categoría existe en la tabla categoria
+            IF EXISTS (SELECT 1 FROM categoria WHERE categoria = @Categoria)
+            BEGIN
+                -- Obtener el ID de la categoría existente
+                DECLARE @IdCategoria INT
+                SELECT @IdCategoria = idcategoria FROM categoria WHERE categoria = @Categoria
+                
+                -- Actualizar el artículo con las claves foráneas correspondientes
+                UPDATE articulos
+                SET nombre = @Nombre, precio = @Precio, marca_idmarca = @IdMarca, categoria_idcategoria = @IdCategoria, stock = @Stock
+                WHERE idarticulo = @IdArticulo
+                
+                SELECT 'Artículo modificado correctamente.'
+            END
+            ELSE
+            BEGIN
+                SELECT 'La categoría especificada no existe en la tabla categoria.'
+            END
+        END
+        ELSE
+        BEGIN
+            SELECT 'La marca especificada no existe en la tabla marca.'
+        END
+    END
+    ELSE
+    BEGIN
+        SELECT 'El artículo especificado no existe en la tabla articulos.'
+    END
+END
+
 ------------------------------------------------------
 
 CREATE PROCEDURE BorrarArticulo
@@ -425,7 +517,7 @@ EXEC BorrarArticulo @IdArticulo = 11
 ---Procedimientos Almacenados de la tabla Informes----
 ------------------------------------------------------
 
-CREATE PROCEDURE InsertarInforme
+ALTER PROCEDURE InsertarInforme
     @NombreCliente VARCHAR(20),
     @ApellidoPaterno VARCHAR(15),
     @ApellidoMaterno VARCHAR(15),
@@ -449,6 +541,29 @@ END
 
 EXEC InsertarInforme @NombreCliente = 'John', @ApellidoPaterno = 'Doe', @ApellidoMaterno = 'Smith', @DNI = '12345678', @Telefono = '123456789', @Email = 'john.doe@example.com', @MontoTotal = 100.00, @DireccionInstalacion = '123 Main Street', @NotasAdicionales = 'Sin notas adicionales', @Redactor = 1, @ArticulosVend = 2, @Tecnico = 3
 SELECT * FROM informe
+
+ALTER PROCEDURE InsertarInforme
+	@NroInforme int,
+    @NombreCliente VARCHAR(20),
+    @ApellidoPaterno VARCHAR(15),
+    @ApellidoMaterno VARCHAR(15),
+    @DNI CHAR(8),
+    @Telefono CHAR(9),
+    @Email VARCHAR(50),
+    @MontoTotal DECIMAL(10, 2),
+    @DireccionInstalacion VARCHAR(80),
+    @NotasAdicionales TEXT,
+    @Redactor INT,
+    @ArticulosVend INT,
+    @Tecnico INT
+AS
+BEGIN
+    -- Insertar el nuevo informe
+    INSERT INTO informe (nro_de_informe, nombre_de_cliente, apellido_paterno, apellido_materno, dni, telefono, email, monto_total, direccion_instalacion, notas_adicionales, redactor, articulos_vend, tecnico)
+    VALUES (@NroInforme, @NombreCliente, @ApellidoPaterno, @ApellidoMaterno, @DNI, @Telefono, @Email, @MontoTotal, @DireccionInstalacion, @NotasAdicionales, @Redactor, @ArticulosVend, @Tecnico)
+    
+    SELECT SCOPE_IDENTITY() AS 'NuevoNumeroInforme'
+END
 
 ------------------------------------------------------
 
@@ -509,3 +624,106 @@ END
 
 
 EXEC BorrarInforme @NumeroInforme = '11'
+
+------------------------------------------------------
+---Procedimientos para la tabla ART_VEND ----
+------------------------------------------------------
+CREATE PROCEDURE InsertarArticulosVendidos
+    @IdInforme INT,
+    @articulo INT,
+    @cantidad INT,
+    @monto DECIMAL(10, 2)
+AS
+BEGIN
+    -- Insertar los datos en la tabla art_vend
+    INSERT INTO art_vend (art_idArt, info_idInforme, cantidad, monto_total)
+    VALUES (@articulo, @IdInforme, @cantidad, @monto)
+END
+
+------------------------------------------------------
+CREATE PROCEDURE ModificarArticulosVendidos
+    @IdInforme INT,
+    @articulo INT,
+    @cantidad INT,
+    @monto DECIMAL(10, 2)
+AS
+BEGIN
+    -- Modificar los datos en la tabla art_vend para el artículo y el informe específicos
+    UPDATE art_vend
+    SET cantidad = @cantidad,
+        monto_total = @monto
+    WHERE art_idArt = @articulo
+      AND info_idInforme = @IdInforme
+END
+------------------------------------------------------
+CREATE PROCEDURE EliminarArticuloVendido
+    @IdInforme INT,
+    @articulo INT
+AS
+BEGIN
+    -- Eliminar el registro de la tabla art_vend para el artículo y el informe específicos
+    DELETE FROM art_vend
+    WHERE art_idArt = @articulo
+      AND info_idInforme = @IdInforme
+END
+
+-----------------------------------------------------------
+---Procedimiento Almacenado para corregir los informes ----
+-----------------------------------------------------------
+CREATE PROCEDURE ActualizarArticulosYMontoTotal
+AS
+BEGIN
+    -- Variables para almacenar el último informe y los valores actualizados
+    DECLARE @UltimoInforme INT
+    DECLARE @TotalArticulosVendidos INT
+    DECLARE @MontoTotal DECIMAL(10, 2)
+
+    -- Obtener el último informe de la tabla "informe"
+    SELECT TOP 1 @UltimoInforme = nro_de_informe
+    FROM informe
+    ORDER BY nro_de_informe DESC
+
+    -- Obtener el total de artículos vendidos y la sumatoria de los montos de la tabla "art_vend"
+    SELECT @TotalArticulosVendidos = COUNT(*), @MontoTotal = SUM(monto_total)
+    FROM art_vend
+    WHERE info_idInforme = @UltimoInforme
+
+    -- Actualizar los campos "articulos_vend" y "monto_total" en el último informe de la tabla "informe"
+    UPDATE informe
+    SET articulos_vend = @TotalArticulosVendidos, monto_total = @MontoTotal
+    WHERE nro_de_informe = @UltimoInforme
+END
+
+------------------------------------------------------
+---TRIGGER para la cantidad de articulos vendidos ----
+------------------------------------------------------
+DROP TRIGGER trg_calcularMonto
+
+CREATE TRIGGER trg_calcularMonto
+ON art_vend
+AFTER INSERT
+AS
+BEGIN
+    UPDATE av
+    SET monto_total = (i.cantidad * (
+        SELECT precio FROM articulos WHERE idarticulo = i.art_idArt
+    ))
+    FROM art_vend av
+    INNER JOIN inserted i ON av.art_idArt = i.art_idArt;
+END;
+
+
+------------------------------------------------------
+---TRIGGER para disminuir stock de los articulos  ----
+------------------------------------------------------
+CREATE TRIGGER DisminuirStock
+ON art_vend
+AFTER INSERT
+AS
+BEGIN
+    -- Actualizar el stock en la tabla articulos
+    UPDATE articulos
+    SET stock = stock - i.cantidad
+    FROM articulos a
+    INNER JOIN inserted i ON a.idarticulo = i.art_idArt;
+END;
