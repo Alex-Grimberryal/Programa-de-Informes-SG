@@ -47,6 +47,7 @@
             vistaInformes.RowTemplate.Height = 29;
             vistaInformes.Size = new Size(1285, 629);
             vistaInformes.TabIndex = 1;
+            vistaInformes.CellClick += vistaInformes_CellClick;
             // 
             // DTPfechaInicio
             // 

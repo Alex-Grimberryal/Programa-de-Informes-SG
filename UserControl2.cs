@@ -41,5 +41,22 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             DataTable dataTable = proc.ObtenerInformesPorFecha(fechaInicio, fechaFin);
             vistaInformes.DataSource = dataTable;
         }
+
+        private void vistaInformes_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Verificar que se haya hecho clic en una celda válida
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                // Obtener los datos del informe seleccionado
+                DataRow informe = ((DataRowView)vistaInformes.Rows[e.RowIndex].DataBoundItem).Row;
+
+                // Crear una instancia de la ventana emergente
+                using (FormPopup popup = new FormPopup(informe))
+                {
+                    // Mostrar la ventana emergente
+                    popup.ShowDialog();
+                }
+            }
+        }
     }
 }
