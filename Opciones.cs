@@ -68,7 +68,13 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
         private void expPDF_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Opcion en Desarrollo, contactese con el programador");
+            panel1.Controls.Clear();
+
+            opciones.ExportData ex = new opciones.ExportData();
+            ex.Dock = DockStyle.Fill;
+
+            panel1.Controls.Add(ex);
+            panel1.Refresh();
         }
     }
 }

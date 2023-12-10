@@ -117,4 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="LABEL1.Text" xml:space="preserve">
+    <value>NOTA:
+
+Para usar el respaldo y clonar la
+base de datos a otro dispositivo
+se requiere:
+
+- La herramienta SqlServer
+   Managment Studio (SSMS)
+- Cambiar las variables de las
+   lineas de conexion
+
+En caso el programa se reinstale
+en el mismo dispositvo omita el
+2do paso.</value>
+  </data>
 </root>

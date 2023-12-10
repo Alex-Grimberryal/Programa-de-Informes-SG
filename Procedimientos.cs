@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
+using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer.Management.Smo;
 
 namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 {
@@ -1033,6 +1035,59 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             }
 
             return resultados;
+        }
+
+        //Procedimiento para el Backup de la Base de Datos
+
+        public void GenerarRespaldoBaseDatos(string rutaDestinoRespaldo)
+        {
+            try
+            {
+                string cadenaConexion = "Data Source=LAPTOP-3R8N4QM6\\SQLEXPRESS; Initial Catalog=NSG; Integrated Security=True; TrustServerCertificate=True";
+
+                // Extraer los valores de la cadena de conexión
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(cadenaConexion);
+                string nombreServidor = builder.DataSource;
+                string nombreBaseDatos = builder.InitialCatalog;
+                string usuario = builder.UserID;
+                string contraseña = builder.Password;
+
+                // Establecer la configuración de conexión a la base de datos
+                ServerConnection connection = new ServerConnection(nombreServidor, usuario, contraseña);
+
+                // Crear una instancia de la clase Server
+                Server server = new Server(connection);
+
+                // Crear una instancia de la clase Backup
+                Backup backup = new Backup();
+                backup.Action = BackupActionType.Database;
+                backup.Database = nombreBaseDatos;
+
+                // Establecer la configuración de destino del respaldo
+                string nombreRespaldo = "RESPALDO";
+                string rutaCompletaRespaldo = Path.Combine(rutaDestinoRespaldo, nombreRespaldo + ".bak");
+
+                int i = 2;
+                while (File.Exists(rutaCompletaRespaldo))
+                {
+                    rutaCompletaRespaldo = Path.Combine(rutaDestinoRespaldo, $"{nombreRespaldo} - {i}.bak");
+                    i++;
+                }
+
+                BackupDeviceItem backupDevice = new BackupDeviceItem(rutaCompletaRespaldo, DeviceType.File);
+
+                // Agregar el destino del respaldo a la colección de dispositivos de respaldo
+                backup.Devices.Add(backupDevice);
+
+                // Realizar la copia de seguridad de la base de datos
+                backup.SqlBackup(server);
+
+                MessageBox.Show("Respaldo generado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al generar el respaldo: " + ex.Message);
+            }
         }
     }
 }

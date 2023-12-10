@@ -80,13 +80,77 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             try
             {
                 // Crear el escritor PDF y abrir el documento
-                string rutaArchivo = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "REPORTES", "Informe.pdf");
+                string rutaArchivo = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "REPORTES", "Informe_" + informeSeleccionado["nro_de_informe"].ToString() + ".pdf");
                 PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(rutaArchivo, FileMode.Create));
                 doc.Open();
 
                 // Agregar los datos del informe al documento
                 if (informeSeleccionado != null)
                 {
+                    // Crear una instancia de la clase PdfPTable para la tabla
+                    PdfPTable tabla = new PdfPTable(1);
+
+                    // Crear la primera celda con la etiqueta "RUC"
+                    PdfPCell celda1 = new PdfPCell(new Phrase("RUC"));
+
+                    // Establecer alineación centrada en la celda
+                    celda1.HorizontalAlignment = Element.ALIGN_CENTER;
+
+                    // Establecer estilo de fuente negrita en la celda
+                    iTextSharp.text.Font negrita = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12f);
+                    celda1.Phrase.Font = negrita;
+
+                    tabla.AddCell(celda1);
+
+                    // Crear la segunda celda con el siguiente RUC "10164116854"
+                    PdfPCell celda2 = new PdfPCell(new Phrase("10164116854"));
+
+                    // Establecer alineación centrada en la celda
+                    celda2.HorizontalAlignment = Element.ALIGN_CENTER;
+
+                    // Establecer estilo de fuente negrita en la celda
+                    celda2.Phrase.Font = negrita;
+
+                    tabla.AddCell(celda2);
+
+                    // Ruta de la imagen que deseas agregar
+                    string rutaImagen = "Pictures\\BANNER_5__3_-removebg-preview (2).png";
+
+                    // Crear una instancia de la clase Image con la ruta de la imagen
+                    iTextSharp.text.Image imagen = iTextSharp.text.Image.GetInstance(rutaImagen);
+
+                    // Ajustar el tamaño de la imagen si es necesario
+                    imagen.ScaleToFit(175, 50);
+
+                    // Crear una instancia de la clase PdfPTable para el contenedor
+                    PdfPTable contenedor = new PdfPTable(2);
+
+                    // Crear una celda para la imagen
+                    PdfPCell celdaImagen = new PdfPCell();
+                    celdaImagen.AddElement(imagen); // Agregar la imagen a la celda de la imagen
+                    celdaImagen.Border = PdfPCell.NO_BORDER; // Opcional: eliminar los bordes de la celda de la imagen
+
+                    // Alinear la celda de la imagen
+                    celdaImagen.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    celdaImagen.VerticalAlignment = Element.ALIGN_MIDDLE;
+
+                    // Agregar la celda de la imagen al contenedor
+                    contenedor.AddCell(celdaImagen);
+
+                    // Crear una celda para la tabla
+                    PdfPCell celdaTabla = new PdfPCell(tabla);
+                    celdaTabla.HorizontalAlignment = Element.ALIGN_LEFT;
+                    // Agregar la celda de la tabla al contenedor
+                    contenedor.AddCell(celdaTabla);
+
+                    // Crear una instancia de la clase PdfPTable para el contenedor
+                    contenedor.DefaultCell.Border = PdfPCell.NO_BORDER; // Opcional: eliminar los bordes de las celdas del contenedor
+                    contenedor.DefaultCell.HorizontalAlignment = Element.ALIGN_CENTER;
+
+                    // Agregar el contenedor al documento PDF
+                    doc.Add(contenedor);
+                    
+
                     // Agregar el número de informe
                     doc.Add(new Paragraph("INFORME NROº - " + informeSeleccionado["nro_de_informe"].ToString()));
 
@@ -95,11 +159,12 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                     doc.Add(new Paragraph("DNI del cliente: " + informeSeleccionado["dni"].ToString()));
 
                     // Agregar la fecha de generación del PDF
-                    doc.Add(new Paragraph("Fecha de generación del PDF: " + DateTime.Now.ToString()));
+                    doc.Add(new Paragraph("Fecha de venta / instalación : " + informeSeleccionado["fecha"].ToString()));
 
                     // Agregar el técnico y la dirección de instalación
                     doc.Add(new Paragraph("Técnico: " + informeSeleccionado["ApellidoTecnico"].ToString()));
                     doc.Add(new Paragraph("Dirección de instalación: " + informeSeleccionado["direccion_instalacion"].ToString()));
+                    doc.Add(new Paragraph(" "));
 
                     // Agregar la tabla de artículos
                     PdfPTable tablaArticulos = new PdfPTable(3);
@@ -137,7 +202,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                     // Agregar la celda adicional para el monto total
                     decimal montoTotal = Convert.ToDecimal(informeSeleccionado["monto_total"]);
                     PdfPCell celdaMontoTotal = new PdfPCell(new Phrase("Monto total: " + montoTotal.ToString(), new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.BOLD)));
-                    celdaMontoTotal.Colspan = 2;
+                    celdaMontoTotal.Colspan = 3;
                     tablaArticulos.AddCell(celdaMontoTotal);
 
                     // Agregar la tabla de artículos al documento
