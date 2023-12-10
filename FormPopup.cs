@@ -1,15 +1,16 @@
-﻿using com.itextpdf.text.pdf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
+
 
 namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 {
@@ -50,6 +51,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                                            "WHERE av.info_idInforme = " + nroInforme;
 
                 // Ejecutar la consulta y obtener los resultados en un DataTable
+                
                 DataTable resultadosArticulos = proc.Consulta(consultaArticulos);
 
                 // Limpiar el ListBox antes de agregar los nuevos elementos
@@ -72,7 +74,88 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
         private void button1_Click(object sender, EventArgs e)
         {
+            // Crear el documento PDF
+            Document doc = new Document();
 
+            try
+            {
+                // Crear el escritor PDF y abrir el documento
+                string rutaArchivo = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "REPORTES", "Informe.pdf");
+                PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(rutaArchivo, FileMode.Create));
+                doc.Open();
+
+                // Agregar los datos del informe al documento
+                if (informeSeleccionado != null)
+                {
+                    // Agregar el número de informe
+                    doc.Add(new Paragraph("INFORME NROº - " + informeSeleccionado["nro_de_informe"].ToString()));
+
+                    // Agregar los datos del cliente
+                    doc.Add(new Paragraph("Nombre completo del cliente: " + informeSeleccionado["nombre_de_cliente"].ToString() + " " + informeSeleccionado["apellido_paterno"].ToString() + " " + informeSeleccionado["apellido_materno"].ToString()));
+                    doc.Add(new Paragraph("DNI del cliente: " + informeSeleccionado["dni"].ToString()));
+
+                    // Agregar la fecha de generación del PDF
+                    doc.Add(new Paragraph("Fecha de generación del PDF: " + DateTime.Now.ToString()));
+
+                    // Agregar el técnico y la dirección de instalación
+                    doc.Add(new Paragraph("Técnico: " + informeSeleccionado["ApellidoTecnico"].ToString()));
+                    doc.Add(new Paragraph("Dirección de instalación: " + informeSeleccionado["direccion_instalacion"].ToString()));
+
+                    // Agregar la tabla de artículos
+                    PdfPTable tablaArticulos = new PdfPTable(3);
+                    tablaArticulos.WidthPercentage = 100;
+                    tablaArticulos.SetWidths(new float[] { 2f, 1f, 1f });
+
+                    // Agregar el encabezado de la tabla
+                    tablaArticulos.AddCell(new PdfPCell(new Phrase("Nombre del Artículo", new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.BOLD))));
+                    tablaArticulos.AddCell(new PdfPCell(new Phrase("Cantidad", new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.BOLD))));
+                    tablaArticulos.AddCell(new PdfPCell(new Phrase("Monto p/a", new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.BOLD))));
+
+
+                    // Obtener el número de informe seleccionado
+                    int nroInforme = Convert.ToInt32(informeSeleccionado["nro_de_informe"]);
+
+                    // Consulta para obtener los artículos, cantidad y monto total relacionados con el informe seleccionado
+                    string consultaArticulos = "SELECT a.nombre, av.cantidad, av.monto_total " +
+                                               "FROM art_vend AS av " +
+                                               "INNER JOIN articulos AS a ON av.art_idArt = a.idarticulo " +
+                                               "WHERE av.info_idInforme = " + nroInforme;
+                    // Agregar los artículos relacionados con el informe a la tabla
+                    DataTable resultadosArticulos;
+                    resultadosArticulos = proc.Consulta(consultaArticulos);
+                    foreach (DataRow row in resultadosArticulos.Rows)
+                    {
+                        string nombreArticulo = row["nombre"].ToString();
+                        int cantidad = Convert.ToInt32(row["cantidad"]);
+                        decimal montoTotala = Convert.ToDecimal(row["monto_total"]);
+
+                        tablaArticulos.AddCell(new PdfPCell(new Phrase(nombreArticulo)));
+                        tablaArticulos.AddCell(new PdfPCell(new Phrase(cantidad.ToString())));
+                        tablaArticulos.AddCell(new PdfPCell(new Phrase(montoTotala.ToString())));
+                    }
+
+                    // Agregar la celda adicional para el monto total
+                    decimal montoTotal = Convert.ToDecimal(informeSeleccionado["monto_total"]);
+                    PdfPCell celdaMontoTotal = new PdfPCell(new Phrase("Monto total: " + montoTotal.ToString(), new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.BOLD)));
+                    celdaMontoTotal.Colspan = 2;
+                    tablaArticulos.AddCell(celdaMontoTotal);
+
+                    // Agregar la tabla de artículos al documento
+                    doc.Add(tablaArticulos);
+                }
+
+                // Cerrar el documento y el escritor PDF
+                doc.Close();
+                writer.Close();
+
+                // Mostrar un mensaje de éxito
+                MessageBox.Show("El informe se ha guardado exitosamente como PDF en la carpeta 'REPORTES' en el escritorio.", "Informe Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                // Mostrar un mensaje de error en caso de que ocurra una excepción
+                MessageBox.Show("Se produjo un error al generar el informe: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void correo_Click(object sender, EventArgs e)
