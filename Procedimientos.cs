@@ -736,6 +736,39 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             }
         }
 
+
+
+        public DataRow ObtenerInformePorNumero(int numeroInforme)
+        {
+            using (SqlConnection connection = new SqlConnection(server))
+            {
+                SqlCommand command = new SqlCommand("SELECT i.nro_de_informe, i.nombre_de_cliente, i.apellido_paterno, i.apellido_materno, " +
+                "i.dni, i.telefono, i.email, i.fecha, i.monto_total, i.direccion_instalacion, " +
+                "i.notas_adicionales, u.nombre AS NombreUsuario, t.apellido_paterno AS ApellidoTecnico " +
+                "FROM informe AS i " +
+                "INNER JOIN usuarios AS u ON i.redactor = u.iduser " +
+                "INNER JOIN tecnico AS t ON i.tecnico = t.idTecnico " +
+                "WHERE i.nro_de_informe = @numeroInforme", connection);
+                command.Parameters.AddWithValue("@numeroInforme", numeroInforme);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                DataTable dataTable = new DataTable();
+                dataTable.Load(reader);
+
+                // Verificar si se encontró un informe válido
+                if (dataTable.Rows.Count > 0)
+                {
+                    return dataTable.Rows[0];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         public void InsertarInformeAMedias(string nombreCliente, string apellidoPaterno, string apellidoMaterno, string dni, string telefono, string email, decimal montoTotal, string direccionInstalacion, string notasAdicionales, int redactor, int articulosVend, int tecnico)
         {
             try
@@ -871,6 +904,8 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
             return siguienteNumeroInforme;
         }
 
+        //Procedimientos para la tabla ArtVend
+
         public DataTable ObtenerTablaArticulos()
         {
             DataTable articulosTable = new DataTable();
@@ -968,6 +1003,36 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
                 connection.Open();
                 command.ExecuteNonQuery();
             }
+        }
+
+        //Consulta para la visualizacion de informes
+
+        public DataTable Consulta(string consulta)
+        {
+            DataTable resultados = new DataTable();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(server))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(consulta, connection))
+                    {
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        {
+                            adapter.Fill(resultados);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejar cualquier excepción que ocurra durante la consulta
+                Console.WriteLine("Error en la consulta: " + ex.Message);
+            }
+
+            return resultados;
         }
     }
 }
