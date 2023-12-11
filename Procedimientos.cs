@@ -1040,39 +1040,7 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
         //Procedimiento para el Backup de la Base de Datos
 
-        public void GenResp()
-        {
-            string nbm_copia = (System.DateTime.Today.Day.ToString() + "-" + System.DateTime.Today.Month.ToString() + "-" + System.DateTime.Today.Year.ToString() + "-" + System.DateTime.Now.Hour.ToString() + "-" + System.DateTime.Now.Minute.ToString() + System.DateTime.Now.Second.ToString() + "-RESPALDO");
-
-            // Obtener caracteres no permitidos en un nombre de archivo
-            char[] invalidChars = Path.GetInvalidFileNameChars();
-
-            // Reemplazar caracteres no permitidos por un guion ("-")
-            foreach (char invalidChar in invalidChars)
-            {
-                nbm_copia = nbm_copia.Replace(invalidChar, '-');
-            }
-
-            string rutaDestino = Path.Combine("C:\\Users\\PRACTICAS\\Desktop\\REPORTES\\RESPALDO", nbm_copia);
-
-            string comando_consulta = $"BACKUP DATABASE [NSG] TO DISK = N'{rutaDestino}' WITH NOFORMAT, NOINIT, NAME = N'NSG-Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10";
-
-            using (SqlConnection connection = new SqlConnection("SERVER=LAPTOP-3R8N4QM6\\SQLEXPRESS;DATABASE=NSG;Integrated Security=True; TrustServerCertificate=True"))
-            {
-                SqlCommand cmd = new SqlCommand(comando_consulta, connection);
-
-                try
-                {
-                    connection.Open();
-                    cmd.ExecuteNonQuery();
-                    MessageBox.Show("Copia generada satisfactoriamente");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Cierre el formulario e inténtelo de nuevo en un par de minutos");
-                }
-            }
-        }
+        
 
         public void GenerarRespaldoBaseDatos(string directorioDestinoRespaldo)
         {

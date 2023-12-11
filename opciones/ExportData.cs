@@ -39,9 +39,6 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
             }
         }
 
-        private void genRespaldo_Click(object sender, EventArgs e)
-        {
-            proc.GenResp();
-        }
+        
     }
 }
