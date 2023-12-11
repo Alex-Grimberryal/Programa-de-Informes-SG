@@ -34,6 +34,7 @@
             LABEL1 = new Label();
             btnSeleccionarRuta = new Button();
             label2 = new Label();
+            genRespaldo = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -90,11 +91,22 @@
             label2.TabIndex = 3;
             label2.Text = "Generar Respaldo";
             // 
+            // genRespaldo
+            // 
+            genRespaldo.Location = new Point(40, 530);
+            genRespaldo.Name = "genRespaldo";
+            genRespaldo.Size = new Size(745, 144);
+            genRespaldo.TabIndex = 4;
+            genRespaldo.Text = "GENERAR RESPALDO";
+            genRespaldo.UseVisualStyleBackColor = true;
+            genRespaldo.Click += genRespaldo_Click;
+            // 
             // ExportData
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.RoyalBlue;
+            Controls.Add(genRespaldo);
             Controls.Add(label2);
             Controls.Add(btnSeleccionarRuta);
             Controls.Add(panel1);
@@ -114,5 +126,6 @@
         private Label LABEL1;
         private Button btnSeleccionarRuta;
         private Label label2;
+        private Button genRespaldo;
     }
 }

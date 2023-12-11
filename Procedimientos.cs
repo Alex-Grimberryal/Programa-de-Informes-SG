@@ -2,6 +2,7 @@
 using System.Data;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
+using System.IO;
 
 namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 {
@@ -1039,54 +1040,64 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD
 
         //Procedimiento para el Backup de la Base de Datos
 
-        public void GenerarRespaldoBaseDatos(string rutaDestinoRespaldo)
+        public void GenResp()
+        {
+            string nbm_copia = (System.DateTime.Today.Day.ToString() + "-" + System.DateTime.Today.Month.ToString() + "-" + System.DateTime.Today.Year.ToString() + "-" + System.DateTime.Now.Hour.ToString() + "-" + System.DateTime.Now.Minute.ToString() + System.DateTime.Now.Second.ToString() + "-RESPALDO");
+
+            // Obtener caracteres no permitidos en un nombre de archivo
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+
+            // Reemplazar caracteres no permitidos por un guion ("-")
+            foreach (char invalidChar in invalidChars)
+            {
+                nbm_copia = nbm_copia.Replace(invalidChar, '-');
+            }
+
+            string rutaDestino = Path.Combine("C:\\Users\\PRACTICAS\\Desktop\\REPORTES\\RESPALDO", nbm_copia);
+
+            string comando_consulta = $"BACKUP DATABASE [NSG] TO DISK = N'{rutaDestino}' WITH NOFORMAT, NOINIT, NAME = N'NSG-Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10";
+
+            using (SqlConnection connection = new SqlConnection("SERVER=LAPTOP-3R8N4QM6\\SQLEXPRESS;DATABASE=NSG;Integrated Security=True; TrustServerCertificate=True"))
+            {
+                SqlCommand cmd = new SqlCommand(comando_consulta, connection);
+
+                try
+                {
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Copia generada satisfactoriamente");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Cierre el formulario e inténtelo de nuevo en un par de minutos");
+                }
+            }
+        }
+
+        public void GenerarRespaldoBaseDatos(string directorioDestinoRespaldo)
         {
             try
             {
-                string cadenaConexion = "Data Source=LAPTOP-3R8N4QM6\\SQLEXPRESS; Initial Catalog=NSG; Integrated Security=True; TrustServerCertificate=True";
+                string nombreProcedimiento = "GenerarRespaldoBaseDatos";
 
-                // Extraer los valores de la cadena de conexión
-                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(cadenaConexion);
-                string nombreServidor = builder.DataSource;
-                string nombreBaseDatos = builder.InitialCatalog;
-                string usuario = builder.UserID;
-                string contraseña = builder.Password;
-
-                // Establecer la configuración de conexión a la base de datos
-                ServerConnection connection = new ServerConnection(nombreServidor, usuario, contraseña);
-
-                // Crear una instancia de la clase Server
-                Server server = new Server(connection);
-
-                // Crear una instancia de la clase Backup
-                Backup backup = new Backup();
-                backup.Action = BackupActionType.Database;
-                backup.Database = nombreBaseDatos;
-
-                // Establecer la configuración de destino del respaldo
-                string nombreRespaldo = "RESPALDO";
-                string rutaCompletaRespaldo = Path.Combine(rutaDestinoRespaldo, nombreRespaldo + ".bak");
-
-                int i = 2;
-                while (File.Exists(rutaCompletaRespaldo))
+                using (SqlConnection connection = new SqlConnection("SERVER=LAPTOP-3R8N4QM6\\SQLEXPRESS;DATABASE=NSG;Integrated Security=True; TrustServerCertificate=True"))
                 {
-                    rutaCompletaRespaldo = Path.Combine(rutaDestinoRespaldo, $"{nombreRespaldo} - {i}.bak");
-                    i++;
+                    using (SqlCommand command = new SqlCommand(nombreProcedimiento, connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Agregar el parámetro de directorioDestino al procedimiento almacenado
+                        command.Parameters.AddWithValue("@directorioDestino", directorioDestinoRespaldo);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                    }
                 }
-
-                BackupDeviceItem backupDevice = new BackupDeviceItem(rutaCompletaRespaldo, DeviceType.File);
-
-                // Agregar el destino del respaldo a la colección de dispositivos de respaldo
-                backup.Devices.Add(backupDevice);
-
-                // Realizar la copia de seguridad de la base de datos
-                backup.SqlBackup(server);
-
-                MessageBox.Show("Respaldo generado correctamente.");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al generar el respaldo: " + ex.Message);
+                // Manejar la excepción aquí, puedes mostrar un mensaje de error o realizar cualquier otra acción necesaria
+                Console.WriteLine("Error al generar el respaldo de la base de datos: " + ex.Message);
             }
         }
     }

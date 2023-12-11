@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Data.SqlClient;
+using System.IO;
 
 namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
 {
@@ -35,6 +37,11 @@ namespace Sistema_de_Registro___SG_COMUNICACIONES_Y_SEGURIDAD.opciones
                 // Llamar al método para generar el respaldo con el directorio seleccionado
                 proc.GenerarRespaldoBaseDatos(directorioDestinoRespaldo);
             }
+        }
+
+        private void genRespaldo_Click(object sender, EventArgs e)
+        {
+            proc.GenResp();
         }
     }
 }
